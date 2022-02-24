@@ -1,0 +1,1 @@
+# Board client script
