@@ -66,6 +66,7 @@ class Game():
     def DrawGrid(self):
         
         BlockSize = 50
+        letter = ["A", "B", "C"]
         for x in range(ROWS):
             for y in range(COLS):
                 rect = pygame.Rect(x*BlockSize+BlockSize, y*BlockSize+BlockSize, BlockSize, BlockSize)
@@ -73,6 +74,7 @@ class Game():
                     self.boxes.append(rect)
                 print(self.boxes)
                 pygame.draw.rect(self.win, WHITE, rect, 1)
+                letter += 1
                 if x*BlockSize == 50:
                     self.win.blit(self.small_font.render("A", True, WHITE), (x*BlockSize+BlockSize-95,y*BlockSize+BlockSize-15))
                 if y*BlockSize == 50:
@@ -104,7 +106,8 @@ class Game():
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = event.pos
-                    self.click_grid(pos)
+                    print(self.click_grid(pos))
+                    time.sleep(4)
         pygame.display.flip()
         
 
@@ -138,9 +141,13 @@ class Game():
         while run:
 
             #bo = n.send("get")
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = event.pos
+                    print(self.click_grid(pos))
             
             self.DisplayBoardWindow()
             """
