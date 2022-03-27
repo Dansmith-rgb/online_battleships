@@ -10,8 +10,7 @@ class Boards():
         """
         init the board by creating empty grid
         """
-        self.board_1 = self.create_empty_board()
-        self.board_2 = self.create_empty_board()
+        self.board = self.create_empty_board()
         self.p1Name = "player 1"
         self.p2Name = "player_2"
         self.ready = False
@@ -30,18 +29,20 @@ class Boards():
         self.board_2 = self.create_empty_board()
 
     def create_empty_board(self):
-        return np.zeros((ROWS, COLS))
+        matrix = []
+        for i in range(ROWS):
+            matrix.append([0] * COLS)
+        for i in range(ROWS):
+            matrix.append([1] * COLS)
+        return matrix
+        
 
-    def get_board(self, board_1=False, board_2=False):
+    def get_board(self):
         """
         gets the data of the boards
         :return: (int,int,int)[]
         """
-        print(self.board_1)
-        if board_1:
-            return self.board_1
-        elif board_2:
-            return self.board_2
-        else:
-            return self.board_1 and self.board_2
-        
+        print(self.board, end='\n')
+
+
+Boards().get_board()
