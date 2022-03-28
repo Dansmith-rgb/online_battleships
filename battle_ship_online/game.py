@@ -67,22 +67,36 @@ class Game():
         
         BlockSize = 50
         letter = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
+        number = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
         num = 0
+        num2 = 0
         for x in range(ROWS):
             for y in range(COLS):
-                rect = pygame.Rect(x*BlockSize+BlockSize, y*BlockSize+BlockSize, BlockSize, BlockSize)
+                rect = pygame.Rect(x*BlockSize+BlockSize+50, y*BlockSize+BlockSize+50, BlockSize, BlockSize)
                 if len(self.boxes) < 100:
                     self.boxes.append(rect)
-                print(self.boxes)
+                
                 pygame.draw.rect(self.win, WHITE, rect, 1)
                 
-                if x*BlockSize == 50:
-                    #print(letter[num])
-                    self.win.blit(self.small_font.render(letter[3], True, WHITE), (x*BlockSize+BlockSize-95,y*BlockSize+BlockSize-15))
-                    num += 1
-                if y*BlockSize == 50:
-                    self.win.blit(self.small_font.render("A", True, WHITE), (x*BlockSize+BlockSize+5,y*BlockSize+BlockSize-110))
-                    num += 1
+                
+                if num2 <= 9:
+                    self.win.blit(self.small_font.render(number[num2], True, WHITE), (x*BlockSize+BlockSize,y*BlockSize+BlockSize+56))
+                    num2 += 1
+
+                
+                
+                
+
+                    
+                
+    
+            self.win.blit(self.small_font.render(letter[num], True, WHITE), (x*BlockSize+BlockSize+60,y*BlockSize-410))
+            
+            
+            if num != 9:
+                num += 1
+
+            
 
         pygame.display.flip()  
 
