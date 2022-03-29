@@ -117,6 +117,7 @@ class Game():
         run = True
         while run:
             self.DrawGrid()
+            self.SideBar("BoardWindow")
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -125,8 +126,19 @@ class Game():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = event.pos
                     print(self.click_grid(pos))
-                    time.sleep(4)
+                    
         pygame.display.flip()
+
+    def SideBar(self, screen):
+        rect = pygame.Rect(700, 200, 200, 300)
+        pygame.draw.rect(self.win, BLACK, rect, 0, -1, 20, -1, 20, -1)
+
+        if screen == "guesses":
+            pass
+        else:
+            pass
+        
+        pass
         
 
     def DisplayGuessesWindow(self, player):
