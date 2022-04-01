@@ -4,6 +4,7 @@ from constants import *
 from network import Network
 import time
 
+
 class Game():
 
     def __init__(self):
@@ -15,7 +16,8 @@ class Game():
         pygame.display.set_caption("Online battleships")
         self.pos = 0
         self.small_font = pygame.font.SysFont("comicsans", 50)
-        self.boxes = [] 
+        self.boxes = []
+        self.ship_dragging = False
 
     def menu_screen(self):
         """
@@ -133,9 +135,21 @@ class Game():
         rect = pygame.Rect(700, 200, 200, 300)
         pygame.draw.rect(self.win, BLACK, rect, 0, -1, 20, -1, 20, -1)
 
+        
+
         if screen == "guesses":
             pass
         else:
+            ships = []
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = event.pos
+                    if event.button == 1:
+                        for ship in ships:
+                            if ship.collidepoint(pos):
+                                self.ship_dragging = True
             pass
         
         pass
