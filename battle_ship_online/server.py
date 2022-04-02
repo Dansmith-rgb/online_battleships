@@ -75,7 +75,7 @@ def threaded_client(conn, game, spec=False):
         data_string = pickle.dumps(bo)
         # If r(second player of the game) has joined then make the
         # game ready
-        if currentId == "r":
+        if currentId == "2":
             bo.ready = True
         conn.send(data_string)
         connections += 1

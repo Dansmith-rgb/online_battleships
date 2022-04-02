@@ -19,7 +19,7 @@ class Game():
         self.pos = 0
         self.small_font = pygame.font.SysFont("comicsans", 50)
         self.boxes = []
-        self.ships = [Submarine(self.win), Destroyer(self.win), Cruiser(self.win), Battleship(self.win), Carrier(self.win)]
+        self.ships = [Submarine(self.win, 700, 200, "1"), Destroyer(self.win, 710, 210, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1")]
 
     def menu_screen(self):
         """
@@ -151,7 +151,11 @@ class Game():
                     if event.button == 1:
                         for ship in ships:
                             if ship.collidepoint(pos):
-                                self.ship.ship_dragging = True
+                                ship.ship_dragging = True
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    if event.button == 1:
+                        for ship in ships:
+                            ship.ship_dragging = False
 
             pass
         
@@ -188,6 +192,12 @@ class Game():
         while run:
 
             #bo = n.send("get")
+            """
+            if player.colour == "1":self.ships = [Submarine(self.win, 700, 200, "1"), Destroyer(self.win, 710, 210, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1")]
+                
+            else:
+                self.ships = [Submarine(self.win, 700, 200, "2"), Destroyer(self.win, 710, 210, "2"), Cruiser(self.win, 720, 220, "2"), Battleship(self.win, 730, 230, "2"), Carrier(self.win, 740, 240, "2")]
+            """
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
