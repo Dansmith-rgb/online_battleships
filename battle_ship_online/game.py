@@ -3,6 +3,8 @@ import pygame
 from constants import *
 from network import Network
 import time
+from ships import *
+
 
 
 class Game():
@@ -17,7 +19,7 @@ class Game():
         self.pos = 0
         self.small_font = pygame.font.SysFont("comicsans", 50)
         self.boxes = []
-        self.ship_dragging = False
+        self.ships = [Submarine(self.win), Destroyer(self.win), Cruiser(self.win), Battleship(self.win), Carrier(self.win)]
 
     def menu_screen(self):
         """
@@ -134,7 +136,7 @@ class Game():
     def SideBar(self, screen):
         rect = pygame.Rect(700, 200, 200, 300)
         pygame.draw.rect(self.win, BLACK, rect, 0, -1, 20, -1, 20, -1)
-
+        
         
 
         if screen == "guesses":
@@ -149,7 +151,8 @@ class Game():
                     if event.button == 1:
                         for ship in ships:
                             if ship.collidepoint(pos):
-                                self.ship_dragging = True
+                                self.ship.ship_dragging = True
+
             pass
         
         pass
@@ -194,15 +197,88 @@ class Game():
                     print(self.click_grid(pos))
             
             self.DisplayBoardWindow()
-            """
-            self.DisplayBoardWindow(self)
-            if bo.player_ready == "False":
-                print("Player not ready")
-            """
+            
+            #self.DisplayBoardWindow(self)
+            #if bo.player_ready == "False":
+                #print("Player not ready")
+            
         print("Hello")
 
         #n.disconnect()
 
+
+
 if __name__ == '__main__':
     name = input("Please type your name: ")               
-    Game().run(name)            
+    Game().run(name)
+     
+
+"""
+import pygame
+
+# --- constants --- (UPPER_CASE names)
+
+SCREEN_WIDTH = 430
+SCREEN_HEIGHT = 410
+WHITE = (255, 255, 255)
+RED   = (255,   0,   0)
+FPS = 30
+
+# --- main ---
+
+# - init -
+
+pygame.init()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# - objects -
+
+rectangle = pygame.rect.Rect(176, 134, 30, 30)
+rectangle_draging = False
+
+# - mainloop -
+
+clock = pygame.time.Clock()
+
+running = True
+
+while running:
+
+    # - events -
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:            
+                if rectangle.collidepoint(event.pos):
+                    rectangle_draging = True
+                    mouse_x, mouse_y = event.pos
+                    offset_x = rectangle.x - mouse_x
+                    offset_y = rectangle.y - mouse_y
+
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:            
+                rectangle_draging = False
+
+        elif event.type == pygame.MOUSEMOTION:
+            if rectangle_draging:
+                mouse_x, mouse_y = event.pos
+                rectangle.x = mouse_x + offset_x
+                rectangle.y = mouse_y + offset_y
+
+    # - draws (without updates) -
+
+    screen.fill(WHITE)
+    pygame.draw.rect(screen, RED, rectangle)
+    pygame.display.flip()
+
+    # - constant game speed / FPS -
+
+    clock.tick(FPS)
+
+# - end -
+
+pygame.quit()            
+"""
