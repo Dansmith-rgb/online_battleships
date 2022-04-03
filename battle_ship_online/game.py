@@ -156,6 +156,16 @@ class Game():
                     if event.button == 1:
                         for ship in ships:
                             ship.ship_dragging = False
+                elif event.type == pygame.MOUSEMOTION:
+                    pos = event.pos
+                    x = pos[0]
+                    y = pos[1]
+                    
+                    for ship in ships:
+                        if ship.ship_dragging:
+                            for square in self.boxes:
+                                if square.collidepoint(x,y):
+                                    ship.draw_ship(self.win, x, y)
 
             pass
         

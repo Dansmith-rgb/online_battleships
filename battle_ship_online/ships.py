@@ -8,8 +8,6 @@ class Ship:
     def update_valid_placement(self, board):
         self.placement_list = self.valid_placement(board)
 
-    def draw_ship(self, board, ship):
-        pass
 
 class Carrier(Ship):
     def __init__(self, board, row, col, colour):
@@ -18,6 +16,9 @@ class Carrier(Ship):
         self.row = row
         self.col = col
         self.color = colour
+
+    def draw_ship(self, board):
+        rect_1 = pygame.rect(self.x,self.y,50,50)
 
     def change_orientation(self, board):
         pass
@@ -32,6 +33,9 @@ class Battleship(Ship):
         self.row = row
         self.col = col
         self.color = colour
+    
+    def draw_ship(self, board):
+        rect_2 = pygame.rect
 
     def change_orientation(self, board):
         pass
@@ -47,6 +51,9 @@ class Cruiser(Ship):
         self.col = col
         self.color = colour
 
+    def draw_ship(self, board):
+        pass
+
     def change_orientation(self, board):
         pass
 
@@ -60,6 +67,9 @@ class Submarine(Ship):
         self.row = row
         self.col = col
         self.color = colour
+
+    def draw_ship(self, board):
+        pass
 
     def change_orientation(self, board):
         pass
@@ -75,14 +85,14 @@ class Destroyer(Ship):
         self.col = col
         self.color = colour
 
+    def draw_ship(self, board):
+        pass
+
     def change_orientation(self, board):
         if self.ship_orientation == "horizontal":
             self.ship_orientation = "vertical"
         else:
             self.ship_orientation = "horizontal"
-
-    def start_pos(self, board):
-        pass    
 
     def valid_placement(self, board):
         pass
