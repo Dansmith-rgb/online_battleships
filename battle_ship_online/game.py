@@ -19,8 +19,8 @@ class Game():
         self.pos = 0
         self.small_font = pygame.font.SysFont("comicsans", 50)
         self.boxes = []
-        self.ships = [Submarine(self.win, 700, 200, "1"), Destroyer(self.win, 710, 210, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1")]
-
+        self.ships = [Submarine(self.win, 700, 200, "1"), Destroyer(self.win, 710, 210, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1", 100, 100)]
+        self.current_ship = [self.ships[0]]
     def menu_screen(self):
         """
         This is the menu screen function
@@ -136,36 +136,45 @@ class Game():
     def SideBar(self, screen):
         rect = pygame.Rect(700, 200, 200, 300)
         pygame.draw.rect(self.win, BLACK, rect, 0, -1, 20, -1, 20, -1)
+        #for ship in self.ships:
+            #ship.move(20,40)
+            #ship.draw_ship(self.win)
         
         
-
+        
+        
         if screen == "guesses":
             pass
         else:
-            ships = []
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = event.pos
                     if event.button == 1:
-                        for ship in ships:
-                            if ship.collidepoint(pos):
-                                ship.ship_dragging = True
+                        for ship in self.ships:
+                            if ship.collide(pos[0], pos[1]):
+                                print("hello")
+                                ship.ship_dragging = True 
+                                self.current_ship.append(ship)
                 elif event.type == pygame.MOUSEBUTTONUP:
                     if event.button == 1:
-                        for ship in ships:
+                        for ship in self.ships:
+                            print("hellooooooooooooooooooooooo")
                             ship.ship_dragging = False
                 elif event.type == pygame.MOUSEMOTION:
                     pos = event.pos
                     x = pos[0]
                     y = pos[1]
+                    print(pos)
                     
-                    for ship in ships:
-                        if ship.ship_dragging:
-                            for square in self.boxes:
-                                if square.collidepoint(x,y):
-                                    ship.draw_ship(self.win, x, y)
+                    
+                    print(self.current_ship)
+                        
+                    self.current_ship[0].draw_ship(self.win, x, y)
+                        
+                    
 
             pass
         
