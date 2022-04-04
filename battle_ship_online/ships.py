@@ -18,15 +18,18 @@ class Carrier(Ship):
         self.row = row
         self.col = col
         self.color = colour
-        self.rect_1 = pygame.rect.Rect(101,100,50,50)
+        self.rect_1 = pygame.rect.Rect(600,200,50,50)
 
     def collide(self, x, y):
         if self.rect_1.collidepoint(x, y):
             return True
 
+    def update_move(self, x,y):
+        self.rect_1.x = x
+        self.rect_1.y = y
 
-    def draw_ship(self, board, x, y):
-        self.rect_1 = pygame.Rect(x,y,50,50)
+    def draw_ship(self, board):
+        #self.rect_1 = pygame.Rect(x,y,50,50)
         
         pygame.draw.rect(board, BLACK, self.rect_1, 0)
 
@@ -49,9 +52,13 @@ class Battleship(Ship):
     def collide(self, x, y):
         if self.rect_1.collidepoint(x, y):
             return True
+
+    def update_move(self, x,y):
+        self.rect_1.x = x
+        self.rect_1.y = y
     
-    def draw_ship(self, board, x, y):
-        self.rect_1 = pygame.Rect(x,y,50,50)
+    def draw_ship(self, board):
+        #self.rect_1 = pygame.Rect(x,y,50,50)
         pygame.draw.rect(board, BLACK, self.rect_1, 0)
 
     def change_orientation(self, board):
@@ -74,8 +81,12 @@ class Cruiser(Ship):
         if self.rect_1.collidepoint(x, y):
             return True
 
-    def draw_ship(self, board,x, y):
-        self.rect_1 = pygame.Rect(x,y,50,50)
+    def update_move(self, x,y):
+        self.rect_1.x = x
+        self.rect_1.y = y
+
+    def draw_ship(self, board):
+        #self.rect_1 = pygame.Rect(x,y,50,50)
         pygame.draw.rect(board, BLACK, self.rect_1, 0)
 
     def change_orientation(self, board):
@@ -98,8 +109,12 @@ class Submarine(Ship):
         if self.rect_1.collidepoint(x, y):
             return True
 
-    def draw_ship(self, board, x, y):
-        self.rect_1 = pygame.Rect(x,y,50,50)
+    def update_move(self, x,y):
+        self.rect_1.x = x
+        self.rect_1.y = y
+
+    def draw_ship(self, board):
+        #self.rect_1 = pygame.Rect(x,y,50,50)
         pygame.draw.rect(board, BLACK, self.rect_1, 0)
 
     def change_orientation(self, board):
@@ -122,7 +137,11 @@ class Destroyer(Ship):
         if self.rect_1.collidepoint(x, y):
             return True
 
-    def draw_ship(self, board, x, y):
+    def update_move(self, x,y):
+        self.rect_1.x = x
+        self.rect_1.y = y
+
+    def draw_ship(self, board):
         #self.rect_1 = pygame.Rect(x,y,50,50)
         pygame.draw.rect(board, BLACK, self.rect_1, 0)
 
