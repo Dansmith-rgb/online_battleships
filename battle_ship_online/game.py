@@ -165,20 +165,30 @@ class Game():
                                 self.current_ship.append(ship)
                                 break
                 elif event.type == pygame.MOUSEBUTTONUP:
-                    if event.button == 1:
-                        for ship in self.ships:
-                            print("hellooooooooooooooooooooooo")
-                            ship.ship_dragging = False
-                elif event.type == pygame.MOUSEMOTION:
                     pos = event.pos
                     x = pos[0]
                     y = pos[1]
-                    print(pos)
-                    
-                    #print(self.current_ship)
-                    if self.current_ship != [None]:
-                        del self.current_ship
-                        self.current_ship[0].update_move(x,y)
+                    if event.button == 1:
+                        for ship in self.ships:
+                            
+                            ship.ship_dragging = False
+                elif event.type == pygame.MOUSEMOTION:
+                    for ship in self.ships:
+                        if ship.ship_dragging:
+                            pos = event.pos
+                            x = pos[0]
+                            y = pos[1]
+                            
+                            
+                            print(self.current_ship)
+                            if self.current_ship != [None]:
+                                print(self.current_ship)
+                                #del self.current_ship[1]
+                                board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                rect = pygame.Rect(700, 200, 200, 300)
+                                pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                self.current_ship[0].update_move(x,y)
                     
 
 
