@@ -18,20 +18,28 @@ class Carrier(Ship):
         self.row = row
         self.col = col
         self.color = colour
-        self.rect_1 = pygame.rect.Rect(600,200,50,50)
+        self.rect_1 = pygame.rect.Rect(650,200,50,50)
+        self.rect_2 = pygame.rect.Rect(700,200, 50, 50)
 
     def collide(self, x, y):
-        if self.rect_1.collidepoint(x, y):
+        if self.rect_1.collidepoint(x, y) or self.rect_2.collidepoint(x,y):
             return True
 
     def update_move(self, x,y):
         self.rect_1.x = x
         self.rect_1.y = y
+        if self.ship_orientation == "horizontal":
+            self.rect_2.x = self.rect_1.x + 50
+            self.rect_2.y = self.rect_1.y
+        else:
+            self.rect_2.x = self.rect_1.x
+            self.rect_2.y = self.rect_1.y + 50
 
     def draw_ship(self, board):
         #self.rect_1 = pygame.Rect(x,y,50,50)
         
         pygame.draw.rect(board, BLACK, self.rect_1, 0)
+        pygame.draw.rect(board, BLACK, self.rect_2, 0)
 
     def change_orientation(self, board):
         pass
@@ -132,22 +140,31 @@ class Destroyer(Ship):
         self.col = col
         self.color = colour
         self.rect_1 = pygame.Rect(270,270,50,50)
+        self.rect_2 = pygame.Rect(320,270,50,50)
 
     def collide(self, x, y):
-        if self.rect_1.collidepoint(x, y):
+        if self.rect_1.collidepoint(x, y) or self.rect_2.collidepoint(x, y):
             return True
 
     def update_move(self, x,y):
         self.rect_1.x = x
         self.rect_1.y = y
+        if self.ship_orientation == "horizontal":
+            self.rect_2.x = self.rect_1.x + 50
+            self.rect_2.y = self.rect_1.y
+        else:
+            self.rect_2.x = self.rect_1.x
+            self.rect_2.y = self.rect_1.y + 50
 
     def draw_ship(self, board):
         #self.rect_1 = pygame.Rect(x,y,50,50)
         pygame.draw.rect(board, BLACK, self.rect_1, 0)
+        pygame.draw.rect(board, BLACK, self.rect_2, 0)
 
     def change_orientation(self, board):
         if self.ship_orientation == "horizontal":
             self.ship_orientation = "vertical"
+            self.update_move(270, 270)
         else:
             self.ship_orientation = "horizontal"
 
