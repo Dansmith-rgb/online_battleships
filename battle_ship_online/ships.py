@@ -84,7 +84,7 @@ class Cruiser(Ship):
         self.col = col
         self.color = colour
         self.rect_1 = pygame.Rect(220,220,50,50)
-        self.rect_2 = pygame.Rect()
+        self.rect_2 = pygame.Rect(270,220,50,50)
 
     def collide(self, x, y):
         if self.rect_1.collidepoint(x, y):
