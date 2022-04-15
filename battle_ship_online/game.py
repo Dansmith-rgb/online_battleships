@@ -119,7 +119,7 @@ class Game():
         :type player: string
         """
         run = True
-        rect = pygame.Rect(700, 200, 200, 300)
+        rect = pygame.Rect(500, 200, 300, 350)
         pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
         while run:
             
@@ -138,14 +138,6 @@ class Game():
         
 
     def SideBar(self, screen):
-        
-        #for ship in self.ships:
-            #ship.move(20,40)
-            #ship.draw_ship(self.win)
-        
-        
-        
-        
         if screen == "guesses":
             pass
         else:
@@ -158,7 +150,6 @@ class Game():
                     if event.button == 1:
                         for ship in self.ships:
                             if ship.collide(pos[0], pos[1]):
-                                print("hello")
                                 ship.ship_dragging = True
                                 if len(self.current_ship) >= 1:
                                     del self.current_ship[0]
@@ -170,7 +161,6 @@ class Game():
                     y = pos[1]
                     if event.button == 1:
                         for ship in self.ships:
-                            
                             ship.ship_dragging = False
                 elif event.type == pygame.MOUSEMOTION:
                     for ship in self.ships:
@@ -179,14 +169,13 @@ class Game():
                             x = pos[0]
                             y = pos[1]
                             
-                            
                             print(self.current_ship)
                             if self.current_ship != [None]:
                                 print(self.current_ship)
                                 #del self.current_ship[1]
                                 board_bg = pygame.image.load('imgs/board_bg.jpg')
                                 self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                rect = pygame.Rect(700, 200, 200, 300)
+                                rect = pygame.Rect(700, 400, 400, 300)
                                 pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                                 self.current_ship[0].update_move(x,y)
                     
@@ -267,72 +256,3 @@ if __name__ == '__main__':
     Game().run(name)
      
 
-"""
-import pygame
-
-# --- constants --- (UPPER_CASE names)
-
-SCREEN_WIDTH = 430
-SCREEN_HEIGHT = 410
-WHITE = (255, 255, 255)
-RED   = (255,   0,   0)
-FPS = 30
-
-# --- main ---
-
-# - init -
-
-pygame.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-
-# - objects -
-
-rectangle = pygame.rect.Rect(176, 134, 30, 30)
-rectangle_draging = False
-
-# - mainloop -
-
-clock = pygame.time.Clock()
-
-running = True
-
-while running:
-
-    # - events -
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:            
-                if rectangle.collidepoint(event.pos):
-                    rectangle_draging = True
-                    mouse_x, mouse_y = event.pos
-                    offset_x = rectangle.x - mouse_x
-                    offset_y = rectangle.y - mouse_y
-
-        elif event.type == pygame.MOUSEBUTTONUP:
-            if event.button == 1:            
-                rectangle_draging = False
-
-        elif event.type == pygame.MOUSEMOTION:
-            if rectangle_draging:
-                mouse_x, mouse_y = event.pos
-                rectangle.x = mouse_x + offset_x
-                rectangle.y = mouse_y + offset_y
-
-    # - draws (without updates) -
-
-    screen.fill(WHITE)
-    pygame.draw.rect(screen, RED, rectangle)
-    pygame.display.flip()
-
-    # - constant game speed / FPS -
-
-    clock.tick(FPS)
-
-# - end -
-
-pygame.quit()            
-"""
