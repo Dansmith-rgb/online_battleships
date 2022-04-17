@@ -119,7 +119,7 @@ class Game():
         :type player: string
         """
         run = True
-        rect = pygame.Rect(500, 200, 300, 350)
+        rect = pygame.Rect(630, 200, 276, 350)
         pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
         while run:
             
@@ -175,7 +175,7 @@ class Game():
                                 #del self.current_ship[1]
                                 board_bg = pygame.image.load('imgs/board_bg.jpg')
                                 self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                rect = pygame.Rect(700, 400, 400, 300)
+                                rect = pygame.Rect(630, 200, 276, 350)
                                 pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                                 self.current_ship[0].update_move(x,y)
                     
