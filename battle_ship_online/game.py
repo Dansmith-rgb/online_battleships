@@ -84,7 +84,7 @@ class Game():
                 
                 
                 if num2 <= 9:
-                    self.win.blit(self.small_font.render(number[num2], True, WHITE), (x*BlockSize+BlockSize,y*BlockSize+BlockSize+56))
+                    self.win.blit(self.small_font.render(number[num2], True, WHITE), (x*BlockSize+BlockSize-5,y*BlockSize+BlockSize + 38))
                     num2 += 1
 
                 
@@ -119,7 +119,7 @@ class Game():
         :type player: string
         """
         run = True
-        rect = pygame.Rect(630, 200, 276, 350)
+        rect = pygame.Rect(630, 150, 276, 350)
         pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
         while run:
             
@@ -172,10 +172,11 @@ class Game():
                             print(self.current_ship)
                             if self.current_ship != [None]:
                                 print(self.current_ship)
+                                print(x,y)
                                 #del self.current_ship[1]
                                 board_bg = pygame.image.load('imgs/board_bg.jpg')
                                 self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                rect = pygame.Rect(630, 200, 276, 350)
+                                rect = pygame.Rect(630, 150, 276, 350)
                                 pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                                 self.current_ship[0].update_move(x,y)
                     

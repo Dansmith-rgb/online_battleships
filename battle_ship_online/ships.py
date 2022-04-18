@@ -18,11 +18,11 @@ class Carrier(Ship):
         self.row = row
         self.col = col
         self.color = colour
-        self.rect_1 = pygame.Rect(650,200,50,50)
-        self.rect_2 = pygame.Rect(700,200, 50, 50)
-        self.rect_3 = pygame.Rect(750,200,50,50)
-        self.rect_4 = pygame.Rect(800,200,50,50)
-        self.rect_5 = pygame.Rect(850,200,50,50)
+        self.rect_1 = pygame.Rect(640,161,50,50)
+        self.rect_2 = pygame.Rect(690,161,50,50)
+        self.rect_3 = pygame.Rect(740,161,50,50)
+        self.rect_4 = pygame.Rect(790,161,50,50)
+        self.rect_5 = pygame.Rect(840,161,50,50)
 
     def collide(self, x, y):
         if self.rect_1.collidepoint(x,y) or self.rect_2.collidepoint(x,y) or self.rect_3.collidepoint(x,y) or self.rect_4.collidepoint(x,y) or self.rect_5.collidepoint(x,y):
@@ -71,10 +71,10 @@ class Battleship(Ship):
         self.row = row
         self.col = col
         self.color = colour
-        self.rect_1 = pygame.Rect(170,170,50,50)
-        self.rect_2 = pygame.Rect(220,170,50,50)
-        self.rect_3 = pygame.Rect(270,170,50,50)
-        self.rect_4 = pygame.Rect(320,170,50,50)
+        self.rect_1 = pygame.Rect(640,228,50,50)
+        self.rect_2 = pygame.Rect(690,228,50,50)
+        self.rect_3 = pygame.Rect(740,228,50,50)
+        self.rect_4 = pygame.Rect(790,228,50,50)
 
     def collide(self, x, y):
         if self.rect_1.collidepoint(x, y) or self.rect_2.collidepoint(x,y) or self.rect_3.collidepoint(x,y) or self.rect_4.collidepoint(x,y):
@@ -119,9 +119,9 @@ class Cruiser(Ship):
         self.row = row
         self.col = col
         self.color = colour
-        self.rect_1 = pygame.Rect(220,220,50,50)
-        self.rect_2 = pygame.Rect(270,220,50,50)
-        self.rect_3 = pygame.Rect(320,220,50,50)
+        self.rect_1 = pygame.Rect(640,295,50,50)
+        self.rect_2 = pygame.Rect(690,295,50,50)
+        self.rect_3 = pygame.Rect(740,295,50,50)
 
     def collide(self, x, y):
         if self.rect_1.collidepoint(x, y) or self.rect_2.collidepoint(x, y) or self.rect_3.collidepoint(x, y):
@@ -161,9 +161,9 @@ class Submarine(Ship):
         self.row = row
         self.col = col
         self.color = colour
-        self.rect_1 = pygame.Rect(700,290,50,50)
-        self.rect_2 = pygame.Rect(750,290,50,50)
-        self.rect_3 = pygame.Rect(800,290,50,50)
+        self.rect_1 = pygame.Rect(640,362,50,50)
+        self.rect_2 = pygame.Rect(690,362,50,50)
+        self.rect_3 = pygame.Rect(740,362,50,50)
     
     def collide(self, x, y):
         if self.rect_1.collidepoint(x, y):
@@ -202,8 +202,8 @@ class Destroyer(Ship):
         self.row = row
         self.col = col
         self.color = colour
-        self.rect_1 = pygame.Rect(750,270,50,50)
-        self.rect_2 = pygame.Rect(800,270,50,50)
+        self.rect_1 = pygame.Rect(640,429,50,50)
+        self.rect_2 = pygame.Rect(690,429,50,50)
 
     def collide(self, x, y):
         if self.rect_1.collidepoint(x, y) or self.rect_2.collidepoint(x, y):
