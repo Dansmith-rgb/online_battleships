@@ -162,6 +162,14 @@ class Game():
                     if event.button == 1:
                         for ship in self.ships:
                             ship.ship_dragging = False
+                            if ship in self.current_ship:
+                                if ship.rect_1.x > 610 or ship.rect_1.x < 88 or ship.rect_1.y < 50:
+                                    ship.reset()
+                                    board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                    self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                    rect = pygame.Rect(630, 150, 276, 350)
+                                    pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                    ship.draw_ship(self.win)
                 elif event.type == pygame.MOUSEMOTION:
                     for ship in self.ships:
                         if ship.ship_dragging:
@@ -180,6 +188,9 @@ class Game():
                                 pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                                 self.current_ship[0].update_move(x,y)
                     
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_r:
+                        self.current_ship[0].change_orientation(self.win)
 
 
                 
