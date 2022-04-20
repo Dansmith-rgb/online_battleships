@@ -19,7 +19,7 @@ class Game():
         self.pos = 0
         self.small_font = pygame.font.SysFont("comicsans", 50)
         self.boxes = []
-        self.ships = [Submarine(self.win, 700, 200, "1"), Destroyer(self.win, 710, 210, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1", 100, 100)]
+        self.ships = [Submarine(self.win, 5, 5, "1"), Destroyer(self.win, 4, 4, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1", 100, 100)]
         self.current_ship = [None]
     def menu_screen(self):
         """
@@ -170,6 +170,7 @@ class Game():
                                     rect = pygame.Rect(630, 150, 276, 350)
                                     pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                                     ship.draw_ship(self.win)
+                                ship.get_closest_box(self.boxes, x, y)
                 elif event.type == pygame.MOUSEMOTION:
                     for ship in self.ships:
                         if ship.ship_dragging:
