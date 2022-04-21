@@ -170,7 +170,17 @@ class Game():
                                     rect = pygame.Rect(630, 150, 276, 350)
                                     pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                                     ship.draw_ship(self.win)
-                                ship.get_closest_box(self.boxes, x, y)
+                                x_1 = ship.get_closest_box(self.boxes, x, y)
+                                for i, box in enumerate(self.boxes):
+                                    print(i)
+                                    if i == x_1:
+                                        print("We are in the right bit")
+                                        board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                        rect = pygame.Rect(630, 150, 276, 350)
+                                        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                        ship.update_move(box.left,100)
+                                        #ship.draw_ship(self.win)
                 elif event.type == pygame.MOUSEMOTION:
                     for ship in self.ships:
                         if ship.ship_dragging:

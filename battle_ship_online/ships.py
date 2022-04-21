@@ -259,8 +259,10 @@ class Destroyer(Ship):
             print(box)
             closest_box.append(box.left - x)
 
-        print(closest_box)
-
+        print(min(closest_box, key=abs))
+        min_val, idx = min([(abs(val), idx) for (idx, val) in enumerate(closest_box)])
+        print(min_val, idx)
+        return idx
     
 
     def valid_placement(self, board, boxes):
