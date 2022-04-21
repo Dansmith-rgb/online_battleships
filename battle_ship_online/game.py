@@ -21,6 +21,7 @@ class Game():
         self.boxes = []
         self.ships = [Submarine(self.win, 5, 5, "1"), Destroyer(self.win, 4, 4, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1", 100, 100)]
         self.current_ship = [None]
+        self.index_box = []
     def menu_screen(self):
         """
         This is the menu screen function
@@ -170,17 +171,28 @@ class Game():
                                     rect = pygame.Rect(630, 150, 276, 350)
                                     pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                                     ship.draw_ship(self.win)
-                                x_1 = ship.get_closest_box(self.boxes, x, y)
-                                for i, box in enumerate(self.boxes):
-                                    print(i)
-                                    if i == x_1:
-                                        print("We are in the right bit")
-                                        board_bg = pygame.image.load('imgs/board_bg.jpg')
-                                        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                        rect = pygame.Rect(630, 150, 276, 350)
-                                        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-                                        ship.update_move(box.left,100)
-                                        #ship.draw_ship(self.win)
+                                
+                                        
+                                for square in self.boxes:
+                                    if square.collidepoint(x,y):
+                                        if ship.valid_placement(square):
+                                            print(square)
+                                            ship.update_move(square.left,square.top)
+                                            self.index_box.clear()
+                                            print("We are in the right bit")
+                                            board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                            self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                            rect = pygame.Rect(630, 150, 276, 350)
+                                            pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                            #ship.draw_ship(self.win)
+                                        else:
+                                            ship.reset()
+                                            board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                            self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                            rect = pygame.Rect(630, 150, 276, 350)
+                                            pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                            ship.draw_ship(self.win)
+                                    
                 elif event.type == pygame.MOUSEMOTION:
                     for ship in self.ships:
                         if ship.ship_dragging:

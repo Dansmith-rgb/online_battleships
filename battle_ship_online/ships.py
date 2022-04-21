@@ -253,19 +253,20 @@ class Destroyer(Ship):
         pygame.draw.rect(board, BLACK, self.rect_1, 0)
         pygame.draw.rect(board, BLACK, self.rect_2, 0)
 
-    def get_closest_box(self, boxes, x, y):
-        closest_box = []
-        for box in boxes:
-            print(box)
-            closest_box.append(box.left - x)
-
-        print(min(closest_box, key=abs))
-        min_val, idx = min([(abs(val), idx) for (idx, val) in enumerate(closest_box)])
-        print(min_val, idx)
-        return idx
     
 
-    def valid_placement(self, board, boxes):
-        for box in boxes:
-            if box == "0":
-                pass
+    def valid_placement(self, square):
+        #print(squares)
+        
+        print(square)
+        if self.ship_orientation == "horizontal":
+            if square.left == 550:
+                return False
+            else:
+                return True
+        elif self.ship_orientation == "vertical":
+            if square.top == 550:
+                return False
+            else:
+                return True
+        pass
