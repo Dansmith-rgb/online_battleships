@@ -16,6 +16,63 @@ class Ship:
         else:
             self.ship_orientation = "horizontal"
 
+    def valid_placement(self, square, be_board):
+        
+        if be_board == 0 or be_board==1:
+            if self.ship_orientation == "horizontal":
+                if self.ship_length == 2:
+                    if square.left == 550:
+                        return False
+                    else:
+                        return True
+                if self.ship_length == 3:
+                    if square.left == 500 or square.left == 550:
+                        return False
+                    else:
+                        return True
+                if self.ship_length == 3:
+                    if square.left == 500 or square.left == 550:
+                        return False
+                    else:
+                        return True
+                if self.ship_length == 4:
+                    if square.left == 450 or square.left == 500 or square.left == 550:
+                        return False
+                    else:
+                        return True
+                if self.ship_length == 5:
+                    if square.left == 400 or square.left == 450 or square.left == 500 or square.left == 550:
+                        return False
+                    else:
+                        return True
+            elif self.ship_orientation == "vertical":
+                if self.ship_length == 2:
+                    if square.top == 550:
+                        return False
+                    else:
+                        return True
+                if self.ship_length == 3:
+                    if square.top == 500 or square.top == 550:
+                        return False
+                    else:
+                        return True
+                if self.ship_length == 3:
+                    if square.top == 500 or square.top == 550:
+                        return False
+                    else:
+                        return True
+                if self.ship_length == 4:
+                    if square.top == 450 or square.top == 500 or square.top == 550:
+                        return False
+                    else:
+                        return True
+                if self.ship_length == 5:
+                    if square.top == 400 or square.top == 450 or square.top == 500 or square.top == 550:
+                        return False
+                    else:
+                        return True
+            pass
+
 
 class Carrier(Ship):
     def __init__(self, board, row, col, colour, x, y):
@@ -74,9 +131,6 @@ class Carrier(Ship):
         pygame.draw.rect(board, BLACK, self.rect_5, 0)
         
 
-    def valid_placement(self, board):
-        pass
-
 class Battleship(Ship):
     def __init__(self, board, row , col, colour):
         Ship.__init__(self)
@@ -126,9 +180,6 @@ class Battleship(Ship):
         pygame.draw.rect(board, BLACK, self.rect_4, 0)
 
 
-    def valid_placement(self, board):
-        pass
-
 class Cruiser(Ship):
     def __init__(self, board, row, col, colour):
         Ship.__init__(self)
@@ -170,9 +221,6 @@ class Cruiser(Ship):
         pygame.draw.rect(board, BLACK, self.rect_2, 0)
         pygame.draw.rect(board, BLACK, self.rect_3, 0)
 
-
-    def valid_placement(self, board):
-        pass
 
 class Submarine(Ship):
     def __init__(self, board, row, col, colour):
@@ -216,9 +264,7 @@ class Submarine(Ship):
         pygame.draw.rect(board, BLACK, self.rect_3, 0)
 
 
-    def valid_placement(self, board):
-        pass
-
+    
 class Destroyer(Ship):
     def __init__(self, board, row, col, colour):
         Ship.__init__(self)
@@ -253,20 +299,4 @@ class Destroyer(Ship):
         pygame.draw.rect(board, BLACK, self.rect_1, 0)
         pygame.draw.rect(board, BLACK, self.rect_2, 0)
 
-    
 
-    def valid_placement(self, square):
-        #print(squares)
-        
-        print(square)
-        if self.ship_orientation == "horizontal":
-            if square.left == 550:
-                return False
-            else:
-                return True
-        elif self.ship_orientation == "vertical":
-            if square.top == 550:
-                return False
-            else:
-                return True
-        pass

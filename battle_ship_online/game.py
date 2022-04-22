@@ -135,6 +135,9 @@ class Game():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = event.pos
                     print(self.click_grid(pos))
+
+    def DisplayOpponentsGuesses(self):
+        pass
                     
         
 
@@ -175,7 +178,7 @@ class Game():
                                         
                                 for square in self.boxes:
                                     if square.collidepoint(x,y):
-                                        if ship.valid_placement(square):
+                                        if ship.valid_placement(square, 0):
                                             print(square)
                                             ship.update_move(square.left,square.top)
                                             self.index_box.clear()
@@ -184,7 +187,7 @@ class Game():
                                             self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
                                             rect = pygame.Rect(630, 150, 276, 350)
                                             pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-                                            #ship.draw_ship(self.win)
+                                            
                                         else:
                                             ship.reset()
                                             board_bg = pygame.image.load('imgs/board_bg.jpg')

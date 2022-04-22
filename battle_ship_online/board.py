@@ -18,8 +18,7 @@ class Boards():
     def check_for_win(self, player):
         pass
 
-    def drop_ship(self, player):
-        pass
+    
 
     def clear(self):
         """
@@ -34,6 +33,8 @@ class Boards():
             matrix.append([0] * COLS)
         for i in range(ROWS):
             matrix.append([1] * COLS)
+
+        print(matrix)
         return matrix
         
 
@@ -45,4 +46,4 @@ class Boards():
         print(self.board, end='\n')
 
 
-Boards().get_board()
+Boards().create_empty_board()
