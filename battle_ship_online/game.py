@@ -113,8 +113,8 @@ class Game():
                 return square.left, square.top
 
     def Pause_menu(self):
-        
-        while True:
+        run = True
+        while run:
             #pause_menu_bg = pygame.image.load('')
             quit_button_img = pygame.image.load('imgs/png-transparent-computer-icons-button-user-profile-button-thumbnail.png')
             self.win.blit(pygame.transform.scale(quit_button_img, (50,50)), (100,100))
@@ -124,8 +124,9 @@ class Game():
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_t:
+                        run = False
                         return False
-
+            pygame.display.flip()
             
             
 
@@ -141,13 +142,14 @@ class Game():
         pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
         pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
         self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
+        pause_button = pygame.Rect(850,550,50,50)
         while run:
             
             self.DrawGrid()
             
             
             self.SideBar("BoardWindow")
-            pause_button = pygame.Rect(850,550,50,50)
+            
             
             pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
             self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
@@ -155,10 +157,19 @@ class Game():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
+
+                
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if pause_button.collidepoint(event.pos):
                         self.Pause_menu()
-
+                        board_bg = pygame.image.load('imgs/board_bg.jpg')
+                        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                    
+                        rect = pygame.Rect(630, 150, 276, 350)
+                        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                        for ship in self.ships:
+                            ship.draw_ship(self.win)
+                       
                 
 
     def DisplayOpponentsGuesses(self):
@@ -176,10 +187,12 @@ class Game():
                     pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = event.pos
+                    print("wagwan")
                     if event.button == 1:
                         for ship in self.ships:
                             if ship.collide(pos[0], pos[1]):
                                 ship.ship_dragging = True
+                                print("hello")
                                 if len(self.current_ship) >= 1:
                                     del self.current_ship[0]
                                 self.current_ship.append(ship)
@@ -208,7 +221,7 @@ class Game():
                                             print(square)
                                             ship.update_move(square.left,square.top)
                                             self.index_box.clear()
-                                            print("We are in the right bit")
+                                            
                                             board_bg = pygame.image.load('imgs/board_bg.jpg')
                                             self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
                                             
@@ -241,8 +254,7 @@ class Game():
                                 rect = pygame.Rect(630, 150, 276, 350)
                                 pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                                 self.current_ship[0].update_move(x,y)
-                                #pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
-                                #self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (600,600))
+                                
                     
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_r:
