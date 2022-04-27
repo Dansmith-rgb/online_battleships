@@ -115,6 +115,7 @@ class Game():
     def Pause_menu(self):
         run = True
         while run:
+            print("hi")
             #pause_menu_bg = pygame.image.load('')
             quit_button_img = pygame.image.load('imgs/png-transparent-computer-icons-button-user-profile-button-thumbnail.png')
             self.win.blit(pygame.transform.scale(quit_button_img, (50,50)), (100,100))
@@ -161,7 +162,7 @@ class Game():
                 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if pause_button.collidepoint(event.pos):
-                        self.Pause_menu()
+                        
                         board_bg = pygame.image.load('imgs/board_bg.jpg')
                         self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
                                     
@@ -169,6 +170,8 @@ class Game():
                         pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                         for ship in self.ships:
                             ship.draw_ship(self.win)
+
+                        self.Pause_menu()
                        
                 
 
