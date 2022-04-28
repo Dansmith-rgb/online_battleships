@@ -155,6 +155,7 @@ class Game():
             pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
             self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
             
+            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -172,7 +173,7 @@ class Game():
                             ship.draw_ship(self.win)
 
                         self.Pause_menu()
-                       
+                  
                 
 
     def DisplayOpponentsGuesses(self):
@@ -190,7 +191,7 @@ class Game():
                     pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = event.pos
-                    print("wagwan")
+                    
                     if event.button == 1:
                         for ship in self.ships:
                             if ship.collide(pos[0], pos[1]):
@@ -294,6 +295,7 @@ class Game():
         global player
         starting = True
         run = True
+        click = False
         #player = bo.start_user
         #bo = n.send("name " + name)
         clock = pygame.time.Clock()
@@ -316,7 +318,7 @@ class Game():
             else:
                 self.ships = [Submarine(self.win, 700, 200, "2"), Destroyer(self.win, 710, 210, "2"), Cruiser(self.win, 720, 220, "2"), Battleship(self.win, 730, 230, "2"), Carrier(self.win, 740, 240, "2")]
             """
-            
+            pause_button = pygame.Rect(850,550,50,50)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
