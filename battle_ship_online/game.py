@@ -87,21 +87,12 @@ class Game():
                 if num2 <= 9:
                     self.win.blit(self.small_font.render(number[num2], True, WHITE), (x*BlockSize+BlockSize-5,y*BlockSize+BlockSize + 38))
                     num2 += 1
-
                 
-                
-                
-
-                    
-                
-    
             self.win.blit(self.small_font.render(letter[num], True, WHITE), (x*BlockSize+BlockSize+60,y*BlockSize-410))
             
             
             if num != 9:
                 num += 1
-
-            
 
         pygame.display.flip()  
 
@@ -114,9 +105,11 @@ class Game():
 
     def Pause_menu(self):
         run = True
+        quit_button = pygame.Rect(100,100,50,50)
         while run:
             print("hi")
-            #pause_menu_bg = pygame.image.load('')
+            pause_menu_bg = pygame.image.load('imgs/battle_ships_menu.jpg').convert()
+            self.win.blit(pygame.transform.scale(pause_menu_bg, (900,600)), (0,0))
             quit_button_img = pygame.image.load('imgs/png-transparent-computer-icons-button-user-profile-button-thumbnail.png')
             self.win.blit(pygame.transform.scale(quit_button_img, (50,50)), (100,100))
             for event in pygame.event.get():
@@ -127,6 +120,12 @@ class Game():
                     if event.key == pygame.K_t:
                         run = False
                         return False
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if quit_button.collidepoint(event.pos):
+                        run = False
+
+
             pygame.display.flip()
             
             
@@ -173,7 +172,7 @@ class Game():
                             ship.draw_ship(self.win)
 
                         self.Pause_menu()
-                  
+                
                 
 
     def DisplayOpponentsGuesses(self):
@@ -199,16 +198,19 @@ class Game():
                                 print("hello")
                                 if len(self.current_ship) >= 1:
                                     del self.current_ship[0]
+                                print(len(self.current_ship))
                                 self.current_ship.append(ship)
+
                                 break
                 elif event.type == pygame.MOUSEBUTTONUP:
                     pos = event.pos
                     x = pos[0]
                     y = pos[1]
+                    print("recognized")
                     if event.button == 1:
                         for ship in self.ships:
-                            ship.ship_dragging = False
                             if ship in self.current_ship:
+                                ship.ship_dragging = False
                                 if ship.rect_1.x > 610 or ship.rect_1.x < 88 or ship.rect_1.y < 50:
                                     ship.reset()
                                     board_bg = pygame.image.load('imgs/board_bg.jpg')
@@ -249,7 +251,7 @@ class Game():
                             y = pos[1]
                             
                             print(self.current_ship)
-                            if self.current_ship != [None]:
+                            if self.current_ship != [None] or len(self.current_ship) != 1:
                                 print(self.current_ship)
                                 print(x,y)
                                 #del self.current_ship[1]
