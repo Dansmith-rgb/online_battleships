@@ -107,7 +107,7 @@ class Game():
         run = True
         quit_button = pygame.Rect(100,100,50,50)
         while run:
-            print("hi")
+            
             pause_menu_bg = pygame.image.load('imgs/battle_ships_menu.jpg').convert()
             self.win.blit(pygame.transform.scale(pause_menu_bg, (900,600)), (0,0))
             quit_button_img = pygame.image.load('imgs/png-transparent-computer-icons-button-user-profile-button-thumbnail.png')
@@ -138,11 +138,8 @@ class Game():
         :type player: string
         """
         run = True
-        rect = pygame.Rect(630, 150, 276, 350)
-        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-        pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
-        self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
-        pause_button = pygame.Rect(850,550,50,50)
+        
+        
         while run:
             
             self.DrawGrid()
@@ -155,24 +152,6 @@ class Game():
             self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
             
             
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-
-                
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if pause_button.collidepoint(event.pos):
-                        
-                        board_bg = pygame.image.load('imgs/board_bg.jpg')
-                        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                    
-                        rect = pygame.Rect(630, 150, 276, 350)
-                        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-                        for ship in self.ships:
-                            ship.draw_ship(self.win)
-
-                        self.Pause_menu()
-                
                 
 
     def DisplayOpponentsGuesses(self):
@@ -189,6 +168,22 @@ class Game():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    pause_button = pygame.Rect(850,550,50,50)
+                    #rect = pygame.Rect(630, 150, 276, 350)
+                    #pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                    pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
+                    self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
+                    if pause_button.collidepoint(event.pos):
+                        
+                        board_bg = pygame.image.load('imgs/board_bg.jpg')
+                        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                    
+                        rect = pygame.Rect(630, 150, 276, 350)
+                        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                        for ship in self.ships:
+                            ship.draw_ship(self.win)
+
+                        self.Pause_menu()
                     pos = event.pos
                     
                     if event.button == 1:
@@ -308,7 +303,8 @@ class Game():
 
         board_bg = pygame.image.load('imgs/board_bg.jpg')
         self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-        
+        rect = pygame.Rect(630, 150, 276, 350)
+        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
         
         while run:
 
