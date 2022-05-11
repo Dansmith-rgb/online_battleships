@@ -4,6 +4,7 @@ from constants import *
 from network import Network
 import time
 from ships import *
+import tkinter as tk
 
 
 
@@ -103,15 +104,31 @@ class Game():
             if square.collidepoint(x,y):
                 return square.left, square.top
 
+    def about(self):
+        run = True
+        while run:
+            self.win.fill(WHITE)
+            title_about_surface = self.small_font.render('ABOUT', True, BLACK)
+            self.win.blit(title_about_surface, (350,50))
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+
+            pygame.display.flip()
+
     def Pause_menu(self):
         run = True
         quit_button = pygame.Rect(100,100,50,50)
+        about_button = pygame.Rect(self.WIDTH/2-50, self.HEIGHT/2-50, 50,50)
         while run:
             
             pause_menu_bg = pygame.image.load('imgs/battle_ships_menu.jpg').convert()
             self.win.blit(pygame.transform.scale(pause_menu_bg, (900,600)), (0,0))
             quit_button_img = pygame.image.load('imgs/png-transparent-computer-icons-button-user-profile-button-thumbnail.png')
             self.win.blit(pygame.transform.scale(quit_button_img, (50,50)), (100,100))
+            pygame.draw.rect(self.win, WHITE, about_button)
+            about_button_surface = self.small_font.render('ABOUT', True, BLACK)
+            self.win.blit(about_button_surface, (self.WIDTH/2, self.HEIGHT/2))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -124,6 +141,9 @@ class Game():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if quit_button.collidepoint(event.pos):
                         run = False
+                    if about_button.collidepoint(event.pos):
+                        self.about()
+                        
 
 
             pygame.display.flip()
