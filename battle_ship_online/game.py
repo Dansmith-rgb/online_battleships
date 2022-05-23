@@ -18,7 +18,8 @@ class Game():
         self.win = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("Online battleships")
         self.pos = 0
-        self.small_font = pygame.font.SysFont("comicsans", 50)
+        self.big_font = pygame.font.SysFont("comicsans", 50)
+        self.medium_font = pygame.font.SysFont("comicsans", 35)
         self.boxes = []
         self.ships = [Submarine(self.win, 5, 5, "1"), Destroyer(self.win, 4, 4, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1", 100, 100)]
         self.current_ship = [None]
@@ -42,14 +43,14 @@ class Game():
             
             
             if offline:
-                off = self.small_font.render("Server Offline, Try Again Later...", 1,
+                off = self.big_font.render("Server Offline, Try Again Later...", 1,
                                         (255, 0, 0))
                 self.win.blit(off, (WIDTH / 2 - off.get_width() / 2, 500))
 
             menu_bg_img_surf = pygame.image.load("imgs/battle_ships_menu.jpg").convert()
             self.win.blit(pygame.transform.scale(menu_bg_img_surf, (900,600)), (0,0))
             pygame.draw.rect(self.win,BLACK,(x,y,w,h), 0, border_radius=10)
-            self.win.blit(self.small_font.render("Click here to start", True, (0,255,0)), (x+10,y+10))
+            self.win.blit(self.big_font.render("Click here to start", True, (0,255,0)), (x+10,y+10))
             button = pygame.Rect(x,y,w,h)
             pygame.display.flip()
 
@@ -86,10 +87,10 @@ class Game():
                 
                 
                 if num2 <= 9:
-                    self.win.blit(self.small_font.render(number[num2], True, WHITE), (x*BlockSize+BlockSize-5,y*BlockSize+BlockSize + 38))
+                    self.win.blit(self.big_font.render(number[num2], True, WHITE), (x*BlockSize+BlockSize-5,y*BlockSize+BlockSize + 38))
                     num2 += 1
                 
-            self.win.blit(self.small_font.render(letter[num], True, WHITE), (x*BlockSize+BlockSize+60,y*BlockSize-410))
+            self.win.blit(self.big_font.render(letter[num], True, WHITE), (x*BlockSize+BlockSize+60,y*BlockSize-410))
             
             
             if num != 9:
@@ -108,8 +109,12 @@ class Game():
         run = True
         while run:
             self.win.fill(WHITE)
-            title_about_surface = self.small_font.render('ABOUT', True, BLACK)
+            title_about_surface = self.big_font.render('ABOUT', True, BLACK)
             self.win.blit(title_about_surface, (350,50))
+            detail_about_surface = self.medium_font.render('This is a online game of battleships with all the original rules:).', True, BLACK)
+            detail_about_surface_2 = self.medium_font.render('Perfect for playing a friend!!!', True, BLACK)
+            self.win.blit(detail_about_surface, (4, 200))
+            self.win.blit(detail_about_surface_2, (4, 245))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -127,7 +132,7 @@ class Game():
             quit_button_img = pygame.image.load('imgs/png-transparent-computer-icons-button-user-profile-button-thumbnail.png')
             self.win.blit(pygame.transform.scale(quit_button_img, (50,50)), (100,100))
             pygame.draw.rect(self.win, WHITE, about_button)
-            about_button_surface = self.small_font.render('ABOUT', True, BLACK)
+            about_button_surface = self.big_font.render('ABOUT', True, BLACK)
             self.win.blit(about_button_surface, (self.WIDTH/2, self.HEIGHT/2))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
