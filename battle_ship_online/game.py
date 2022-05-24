@@ -19,7 +19,7 @@ class Game():
         pygame.display.set_caption("Online battleships")
         self.pos = 0
         self.big_font = pygame.font.SysFont("comicsans", 50)
-        self.medium_font = pygame.font.SysFont("comicsans", 35)
+        self.medium_font = pygame.font.SysFont("comicsans", 30)
         self.boxes = []
         self.ships = [Submarine(self.win, 5, 5, "1"), Destroyer(self.win, 4, 4, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1", 100, 100)]
         self.current_ship = [None]
@@ -113,18 +113,26 @@ class Game():
             self.win.blit(title_about_surface, (350,50))
             detail_about_surface = self.medium_font.render('This is a online game of battleships with all the original rules:).', True, BLACK)
             detail_about_surface_2 = self.medium_font.render('Perfect for playing a friend!!!', True, BLACK)
+            back_button_img = pygame.image.load('imgs/back-button.png')
+            back_button_rect = pygame.Rect(400,400,50,50)
+            self.win.blit(pygame.transform.scale(back_button_img, (50,50)), (400, 400))
             self.win.blit(detail_about_surface, (4, 200))
             self.win.blit(detail_about_surface_2, (4, 245))
+        
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
+                mouse = pygame.mouse.get_pos()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if back_button_rect.collidepoint(*mouse):
+                        run = False
 
             pygame.display.flip()
 
     def Pause_menu(self):
         run = True
         quit_button = pygame.Rect(100,100,50,50)
-        about_button = pygame.Rect(self.WIDTH/2-50, self.HEIGHT/2-50, 50,50)
+        about_button = pygame.Rect(self.WIDTH/2-100, self.HEIGHT/2-70, 200,70)
         while run:
             
             pause_menu_bg = pygame.image.load('imgs/battle_ships_menu.jpg').convert()
@@ -133,7 +141,7 @@ class Game():
             self.win.blit(pygame.transform.scale(quit_button_img, (50,50)), (100,100))
             pygame.draw.rect(self.win, WHITE, about_button)
             about_button_surface = self.big_font.render('ABOUT', True, BLACK)
-            self.win.blit(about_button_surface, (self.WIDTH/2, self.HEIGHT/2))
+            self.win.blit(about_button_surface, (self.WIDTH/2-92, self.HEIGHT/2-70))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -194,12 +202,13 @@ class Game():
                     pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pause_button = pygame.Rect(850,550,50,50)
+                    print("2rfwygwdygswbvefyuv")
                     #rect = pygame.Rect(630, 150, 276, 350)
                     #pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                     pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
                     self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
                     if pause_button.collidepoint(event.pos):
-                        
+                        self.Pause_menu()
                         board_bg = pygame.image.load('imgs/board_bg.jpg')
                         self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
                                     
@@ -208,7 +217,7 @@ class Game():
                         for ship in self.ships:
                             ship.draw_ship(self.win)
 
-                        self.Pause_menu()
+                        
                     pos = event.pos
                     
                     if event.button == 1:
