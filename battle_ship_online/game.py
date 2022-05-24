@@ -7,14 +7,15 @@ from ships import *
 import tkinter as tk
 
 
-
+pygame.init()
 class Game():
 
     def __init__(self):
         self.WIDTH = WIDTH
         self.HEIGHT = HEIGHT
-        pygame.init()
+        
         pygame.font.init()
+        
         self.win = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("Online battleships")
         self.pos = 0
@@ -24,6 +25,7 @@ class Game():
         self.ships = [Submarine(self.win, 5, 5, "1"), Destroyer(self.win, 4, 4, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1", 100, 100)]
         self.current_ship = [None]
         self.index_box = []
+        self.mute_music = False
     def menu_screen(self):
         """
         This is the menu screen function
@@ -131,17 +133,31 @@ class Game():
 
     def Pause_menu(self):
         run = True
-        quit_button = pygame.Rect(100,100,50,50)
+        quit_button = pygame.Rect(400,400,50,50)
         about_button = pygame.Rect(self.WIDTH/2-100, self.HEIGHT/2-70, 200,70)
         while run:
             
-            pause_menu_bg = pygame.image.load('imgs/battle_ships_menu.jpg').convert()
-            self.win.blit(pygame.transform.scale(pause_menu_bg, (900,600)), (0,0))
-            quit_button_img = pygame.image.load('imgs/png-transparent-computer-icons-button-user-profile-button-thumbnail.png')
-            self.win.blit(pygame.transform.scale(quit_button_img, (50,50)), (100,100))
+            self.win.fill(WHITE)
+            quit_button_img = pygame.image.load('imgs/quit.png')
+            self.win.blit(pygame.transform.scale(quit_button_img, (50,50)), (400,400))
             pygame.draw.rect(self.win, WHITE, about_button)
+            title_pause_surface = self.big_font.render('Online Battleships', True, BLACK)
             about_button_surface = self.big_font.render('ABOUT', True, BLACK)
             self.win.blit(about_button_surface, (self.WIDTH/2-92, self.HEIGHT/2-70))
+            self.win.blit(title_pause_surface, (240, 40))
+            back_button_img = pygame.image.load('imgs/back-button.png')
+            back_button_rect = pygame.Rect(50,50,50,50)
+            self.win.blit(pygame.transform.scale(back_button_img, (50,50)), (700, 525))
+            music_button = pygame.Rect(750,500,50,50)
+            if self.mute_music:
+                music_on_img = pygame.image.load('imgs/volume.png')
+                self.win.blit(pygame.transform.scale(music_on_img, (50,50)), (780,525))
+            else:
+                music_off_img = pygame.image.load('imgs/mute.png')
+                self.win.blit(pygame.transform.scale(music_off_img, (50,50)), (780,525))
+            
+            
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -153,10 +169,16 @@ class Game():
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if quit_button.collidepoint(event.pos):
+                        pygame.quit()
+                    if back_button_rect.collidepoint(event.pos):
                         run = False
                     if about_button.collidepoint(event.pos):
                         self.about()
-                        
+                    if music_button.collidepoint(event.pos):
+                        if self.mute_music == False:
+                            self.mute_music = True
+                        else:
+                            self.mute_music = False
 
 
             pygame.display.flip()
