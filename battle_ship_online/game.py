@@ -83,7 +83,9 @@ class Game():
             for y in range(COLS):
                 rect = pygame.Rect(x*BlockSize+BlockSize+50, y*BlockSize+BlockSize+50, BlockSize, BlockSize)
                 if len(self.boxes) < 100:
+
                     self.boxes.append(rect)
+                    
                 
                 pygame.draw.rect(self.win, WHITE, rect, 1)
                 
@@ -133,22 +135,22 @@ class Game():
 
     def Pause_menu(self):
         run = True
-        quit_button = pygame.Rect(400,400,50,50)
+        quit_button = pygame.Rect(425,400,50,50)
         about_button = pygame.Rect(self.WIDTH/2-100, self.HEIGHT/2-70, 200,70)
         while run:
             
             self.win.fill(WHITE)
             quit_button_img = pygame.image.load('imgs/quit.png')
-            self.win.blit(pygame.transform.scale(quit_button_img, (50,50)), (400,400))
+            self.win.blit(pygame.transform.scale(quit_button_img, (50,50)), (425,400))
             pygame.draw.rect(self.win, WHITE, about_button)
             title_pause_surface = self.big_font.render('Online Battleships', True, BLACK)
             about_button_surface = self.big_font.render('ABOUT', True, BLACK)
             self.win.blit(about_button_surface, (self.WIDTH/2-92, self.HEIGHT/2-70))
             self.win.blit(title_pause_surface, (240, 40))
             back_button_img = pygame.image.load('imgs/back-button.png')
-            back_button_rect = pygame.Rect(50,50,50,50)
+            back_button_rect = pygame.Rect(700,525,50,50)
             self.win.blit(pygame.transform.scale(back_button_img, (50,50)), (700, 525))
-            music_button = pygame.Rect(750,500,50,50)
+            music_button = pygame.Rect(780,525,50,50)
             if self.mute_music:
                 music_on_img = pygame.image.load('imgs/volume.png')
                 self.win.blit(pygame.transform.scale(music_on_img, (50,50)), (780,525))
@@ -169,9 +171,9 @@ class Game():
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if quit_button.collidepoint(event.pos):
-                        pygame.quit()
-                    if back_button_rect.collidepoint(event.pos):
                         run = False
+                    if back_button_rect.collidepoint(event.pos):
+                        pygame.quit()
                     if about_button.collidepoint(event.pos):
                         self.about()
                     if music_button.collidepoint(event.pos):
@@ -258,8 +260,10 @@ class Game():
                     x = pos[0]
                     y = pos[1]
                     print("recognized")
+                   
                     if event.button == 1:
                         for ship in self.ships:
+                            
                             if ship in self.current_ship:
                                 ship.ship_dragging = False
                                 if ship.rect_1.x > 610 or ship.rect_1.x < 88 or ship.rect_1.y < 50:
@@ -271,8 +275,9 @@ class Game():
                                     pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                                     ship.draw_ship(self.win)
                                 
-                                        
+                                
                                 for square in self.boxes:
+                                    
                                     if square.collidepoint(x,y):
                                         if ship.valid_placement(square, 0):
                                             print(square)
