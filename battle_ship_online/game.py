@@ -4,7 +4,7 @@ from constants import *
 from network import Network
 import time
 from ships import *
-import tkinter as tk
+import tkinter.messagebox as tk
 
 
 pygame.init()
@@ -26,6 +26,7 @@ class Game():
         self.current_ship = [None]
         self.index_box = []
         self.mute_music = False
+        self.leave = False
     def menu_screen(self):
         """
         This is the menu screen function
@@ -133,6 +134,8 @@ class Game():
 
             pygame.display.flip()
 
+    
+
     def Pause_menu(self):
         run = True
         quit_button = pygame.Rect(425,400,50,50)
@@ -173,7 +176,16 @@ class Game():
                     if quit_button.collidepoint(event.pos):
                         run = False
                     if back_button_rect.collidepoint(event.pos):
-                        pygame.quit()
+                        
+                        
+                        answer = tk.askyesno("Leaving game", "Are you sure you want to leave the game?")
+                        if answer == "no":
+                            self.leave = False
+                        else:
+                            self.leave = True
+                        
+                        if self.leave:
+                            pygame.quit()
                     if about_button.collidepoint(event.pos):
                         self.about()
                     if music_button.collidepoint(event.pos):
