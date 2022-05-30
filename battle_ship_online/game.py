@@ -5,6 +5,7 @@ from network import Network
 import time
 from ships import *
 import tkinter.messagebox as tk
+import tkinter
 
 
 pygame.init()
@@ -178,11 +179,15 @@ class Game():
                     if back_button_rect.collidepoint(event.pos):
                         
                         
-                        answer = tk.askyesno("Leaving game", "Are you sure you want to leave the game?")
-                        if answer == "no":
-                            self.leave = False
-                        else:
+                        root = tkinter.Tk()
+                        root.overrideredirect(1)
+                        root.withdraw()
+                        answer = tk.askyesno("Leave the game?", "Are you sure you want to leave the game?")
+                        if answer == True:
+                            
                             self.leave = True
+                        else:
+                            self.leave = False
                         
                         if self.leave:
                             pygame.quit()
@@ -238,9 +243,6 @@ class Game():
                     pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pause_button = pygame.Rect(850,550,50,50)
-                    print("2rfwygwdygswbvefyuv")
-                    #rect = pygame.Rect(630, 150, 276, 350)
-                    #pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                     pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
                     self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
                     if pause_button.collidepoint(event.pos):
@@ -252,10 +254,8 @@ class Game():
                         pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                         for ship in self.ships:
                             ship.draw_ship(self.win)
-
                         
                     pos = event.pos
-                    
                     if event.button == 1:
                         for ship in self.ships:
                             if ship.collide(pos[0], pos[1]):
@@ -271,7 +271,6 @@ class Game():
                     pos = event.pos
                     x = pos[0]
                     y = pos[1]
-                    print("recognized")
                    
                     if event.button == 1:
                         for ship in self.ships:
@@ -350,7 +349,7 @@ class Game():
         
         
 
-    def DisplayGuessesWindow(self, player):
+    def DisplayGuessesWindow(self):
         pass
 
     def connect(self):
@@ -380,8 +379,9 @@ class Game():
         pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
         
         while run:
-
+            
             #bo = n.send("get")
+            #turn = bo.start_user
             """
             if player.colour == "1":
                 self.ships = [Submarine(self.win, 700, 200, "1"), Destroyer(self.win, 710, 210, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1")]
@@ -396,6 +396,12 @@ class Game():
                 
             
             self.DisplayBoardWindow()
+
+            #if turn == bo.turn and bo.ready:
+            self.DisplayGuessesWindow()
+            #else:
+            self.DisplayOpponentsGuesses()
+
             
             pygame.display.flip()
             #if bo.player_ready == "False":
