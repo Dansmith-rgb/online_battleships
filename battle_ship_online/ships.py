@@ -262,6 +262,177 @@ class Carrier(Ship):
                             return False
                     else:
                         return False
+
+            else:
+                numbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+                if key[1] == "1":
+                    new_key = "2"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "3"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "4"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                new_key = "5"
+                                info4 = board[key[0]+new_key]
+                                if info4[1] == "":
+                                    info4[1] = "Carrier"
+                                    info3[1] = "Carrier"
+                                    info2[1] = "Carrier"
+                                    info1[1] = "Carrier"
+                                    return True
+                                else:
+                                    return False
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "2":
+                    new_key = "3"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "4"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "5"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                new_key = "6"
+                                info4 = board[key[0]+new_key]
+                                if info4[1] == "":
+                                    info4[1] = "Carrier"
+                                    info3[1] = "Carrier"
+                                    info2[1] = "Carrier"
+                                    info1[1] = "Carrier"
+                                    return True
+                                else:
+                                    return False
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "3":
+                    new_key = "4"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "5"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "6"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                new_key = "7"
+                                info4 = board[key[0]+new_key]
+                                if info4[1] == "":
+                                    info4[1] = "Carrier"
+                                    info3[1] = "Carrier"
+                                    info2[1] = "Carrier"
+                                    info1[1] = "Carrier"
+                                    return True
+                                else:
+                                    return False
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "4":
+                    new_key = "5"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "6"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "7"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                new_key = "8"
+                                info4 = board[key[0]+new_key]
+                                if info4[1] == "":
+                                    info4[1] = "Carrier"
+                                    info3[1] = "Carrier"
+                                    info2[1] = "Carrier"
+                                    info1[1] = "Carrier"
+                                    return True
+                                else:
+                                    return False
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "5":
+                    new_key = "6"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "7"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "8"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                new_key = "9"
+                                info4 = board[key[0]+new_key]
+                                if info4[1] == "":
+                                    info4[1] = "Carrier"
+                                    info3[1] = "Carrier"
+                                    info2[1] = "Carrier"
+                                    info1[1] = "Carrier"
+                                    return True
+                                else:
+                                    return False
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "6":
+                    new_key = "7"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "8"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "9"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                new_key = "10"
+                                info4 = board[key[0]+new_key]
+                                if info4[1] == "":
+                                    info4[1] = "Carrier"
+                                    info3[1] = "Carrier"
+                                    info2[1] = "Carrier"
+                                    info1[1] = "Carrier"
+                                    return True
+                                else:
+                                    return False
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+                pass
                     
 
     
@@ -492,6 +663,168 @@ class Battleship(Ship):
                     else:
                         return False
 
+            else:
+                if key[1] == "1":
+                    new_key = "2"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "3"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "4"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                info3[1] = "Battleship"
+                                info2[1] = "Battleship"
+                                info1[1] = "Battleship"
+                                return True
+                                
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "2":
+                    new_key = "3"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "4"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "5"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                info3[1] = "Battleship"
+                                info2[1] = "Battleship"
+                                info1[1] = "Battleship"
+                                return True
+                                
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "3":
+                    new_key = "4"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "5"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "6"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                info3[1] = "Battleship"
+                                info2[1] = "Battleship"
+                                info1[1] = "Battleship"
+                                return True
+                                
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "4":
+                    new_key = "5"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "6"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "7"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                info3[1] = "Battleship"
+                                info2[1] = "Battleship"
+                                info1[1] = "Battleship"
+                                return True
+                                
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "5":
+                    new_key = "6"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "7"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "8"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                info3[1] = "Battleship"
+                                info2[1] = "Battleship"
+                                info1[1] = "Battleship"
+                                return True
+                                
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "6":
+                    new_key = "7"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "8"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "9"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                info3[1] = "Battleship"
+                                info2[1] = "Battleship"
+                                info1[1] = "Battleship"
+                                return True
+                                
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "7":
+                    new_key = "8"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "9"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            new_key = "10"
+                            info3 = board[key[0]+new_key]
+                            if info3[1] == "":
+                                info3[1] = "Battleship"
+                                info2[1] = "Battleship"
+                                info1[1] = "Battleship"
+                                return True
+                                
+                            else:
+                                return False
+                        else:
+                            return False
+                    else:
+                        return False
+
 
 
     def collide(self, x, y):
@@ -677,6 +1010,120 @@ class Cruiser(Ship):
                     else:
                         return False
 
+            else:
+                if key[1] == "1":
+                    new_key = "2"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "3"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Cruiser"
+                            info1[1] = "Cruiser"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "2":
+                    new_key = "3"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "4"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Cruiser"
+                            info1[1] = "Cruiser"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "4":
+                    new_key = "5"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "6"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Cruiser"
+                            info1[1] = "Cruiser"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "5":
+                    new_key = "6"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "7"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Cruiser"
+                            info1[1] = "Cruiser"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "6":
+                    new_key = "7"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "8"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Cruiser"
+                            info1[1] = "Cruiser"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "7":
+                    new_key = "8"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "9"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Cruiser"
+                            info1[1] = "Cruiser"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "8":
+                    new_key = "9"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "10"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Cruiser"
+                            info1[1] = "Cruiser"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+
     def collide(self, x, y):
         if self.rect_1.collidepoint(x, y) or self.rect_2.collidepoint(x, y) or self.rect_3.collidepoint(x, y):
             return True
@@ -852,6 +1299,119 @@ class Submarine(Ship):
                             return False
                     else:
                         return False
+
+            else:
+                if key[1] == "1":
+                    new_key = "2"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "3"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Submarine"
+                            info1[1] = "Submarine"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "2":
+                    new_key = "3"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "4"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Submarine"
+                            info1[1] = "Submarine"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "4":
+                    new_key = "5"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "6"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Submarine"
+                            info1[1] = "Submarine"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "5":
+                    new_key = "6"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "7"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Submarine"
+                            info1[1] = "Submarine"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "6":
+                    new_key = "7"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "8"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Submarine"
+                            info1[1] = "Submarine"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "7":
+                    new_key = "8"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "9"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Submarine"
+                            info1[1] = "Submarine"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
+
+                if key[1] == "8":
+                    new_key = "9"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        new_key = "10"
+                        info2 = board[key[0]+new_key]
+                        if info2[1] == "":
+                            info2[1] = "Submarine"
+                            info1[1] = "Submarine"
+                            return True
+                        else:
+                            return False
+                    else:
+                        return False
     
     def collide(self, x, y):
         if self.rect_1.collidepoint(x, y):
@@ -981,6 +1541,78 @@ class Destroyer(Ship):
                         return True
                     else:
                         return False
+
+            else:
+                if key[1] == "1":
+                    new_key = "2"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        info1[1] = "Destroyer"
+                        return True
+                    else:
+                        return False
+
+                if key[1] == "2":
+                    new_key = "3"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        info1[1] = "Destroyer"
+                        return True
+                    else:
+                        return False
+
+                if key[1] == "3":
+                    new_key = "4"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        info1[1] = "Destroyer"
+                        return True
+                    else:
+                        return False
+
+                if key[1] == "5":
+                    new_key = "6"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        info1[1] = "Destroyer"
+                        return True
+                    else:
+                        return False
+
+                if key[1] == "6":
+                    new_key = "7"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        info1[1] = "Destroyer"
+                        return True
+                    else:
+                        return False
+
+                if key[1] == "8":
+                    new_key = "9"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        info1[1] = "Destroyer"
+                        return True
+                    else:
+                        return False
+
+                if key[1] == "9":
+                    new_key = "10"
+
+                    info1 = board[key[0]+new_key]
+                    if info1[1] == "":
+                        info1[1] = "Destroyer"
+                        return True
+                    else:
+                        return False
+    
 
     def collide(self, x, y):
         if self.rect_1.collidepoint(x, y) or self.rect_2.collidepoint(x, y):

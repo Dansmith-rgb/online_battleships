@@ -114,7 +114,7 @@ class Game():
                 num += 1
         x = 200
         y = 202
-        your_dict = {}
+        
 
         
                 
@@ -124,9 +124,9 @@ class Game():
     def click_grid(self, pos):
         x = pos[0]
         y = pos[1]
-        for square in self.boxes:
-            if square.collidepoint(x,y):
-                return square.left, square.top
+        for key,square in self.board.items():
+            if square[0].collidepoint(x,y):
+                return key
 
     def about(self):
         run = True
@@ -340,6 +340,15 @@ class Game():
                                                     
                                                     rect = pygame.Rect(630, 150, 276, 350)
                                                     pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+
+                                            else:
+                                                ship.reset()
+                                                board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                                self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                                rect = pygame.Rect(630, 150, 276, 350)
+                                                pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                                
+                                                ship.draw_ship(self.win)
                                             
                                             
                                         else:
@@ -390,14 +399,22 @@ class Game():
         
         
 
-    def DisplayGuessesWindow(self):
+    def DisplayGuessesWindow(self,opp_board):
         run = True
         while run:
             self.DrawGrid()
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     mouse = event.pos
-                    print(self.click_grid(mouse))
+                    click_pos = print(self.click_grid(mouse, opp_board))
+                    for key, value in opp_board.items():
+                        if click_pos == key:
+                            if value[1] == "Carrier" or value[1] == "Battleship" or value[1] == "Submarine" or value[1] == "Destroyer" or value[1] == "Cruiser":
+                                #draw a cross if a ship was hit
+                                pass
+                            else:
+                                
+                                #draw circle if not hit a ship
         pass
 
     def connect(self):
