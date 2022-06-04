@@ -121,10 +121,10 @@ class Game():
 
         pygame.display.flip()  
 
-    def click_grid(self, pos):
+    def click_grid(self, pos, opp_board):
         x = pos[0]
         y = pos[1]
-        for key,square in self.board.items():
+        for key,square in opp_board.items():
             if square[0].collidepoint(x,y):
                 return key
 
@@ -404,18 +404,57 @@ class Game():
         while run:
             self.DrawGrid()
             for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    print("RECOGNISED")
                     mouse = event.pos
-                    click_pos = print(self.click_grid(mouse, opp_board))
+                    click_pos = self.click_grid(mouse, opp_board)
                     for key, value in opp_board.items():
+                        if value[2] == "Hit":
+                            topleft = value[0].topleft
+                            bottomright = value[0].bottomright
+                            topright = value[0].topright
+                            bottomleft = value[0].bottomleft
+                            pygame.draw.line(self.win, WHITE, (topleft),(bottomright))
+                            pygame.draw.line(self.win, WHITE, (topright),(bottomleft))
+                        if value[2] == "Miss":
+                            top = value[0].top
+                            bottom = value[0].bottom
+                            right = value[0].right
+                            left = value[0].left
+                            pygame.draw.circle(self.win, WHITE, ((right+left)/2, (top+bottom)/2), 10)
                         if click_pos == key:
-                            if value[1] == "Carrier" or value[1] == "Battleship" or value[1] == "Submarine" or value[1] == "Destroyer" or value[1] == "Cruiser":
-                                #draw a cross if a ship was hit
-                                pass
-                            else:
+                            if value[2] == "":
                                 
+                                print("yokyhpotyohn")
+                                if value[1] == "Carrier" or value[1] == "Battleship" or value[1] == "Submarine" or value[1] == "Destroyer" or value[1] == "Cruiser":
+                                    print("yokyhpotyohn")
+                                    topleft = value[0].topleft
+                                    bottomright = value[0].bottomright
+                                    topright = value[0].topright
+                                    bottomleft = value[0].bottomleft
+                                    pygame.draw.line(self.win, WHITE, (topleft),(bottomright))
+                                    pygame.draw.line(self.win, WHITE, (topright),(bottomleft))
+                                    value[2] = "Hit"
+                                    run = False
+                                    #draw a cross if a ship was hit
+                                    pass
+                                else:
+                                    top = value[0].top
+                                    bottom = value[0].bottom
+                                    right = value[0].right
+                                    left = value[0].left
+                                    pygame.draw.circle(self.win, WHITE, ((right+left)/2, (top+bottom)/2), 10)
+                                    value[2] = "Miss"
+                                    run = False
                                 #draw circle if not hit a ship
-        pass
+                            else:
+                                root = tkinter.Tk()
+                                root.overrideredirect(1)
+                                root.withdraw()
+                                tk.showerror("Select different box", "You can't choose a box you have already chosen!")
+            pygame.display.flip()
 
     def connect(self):
         """
@@ -460,10 +499,23 @@ class Game():
                     pygame.quit()
                 
             
-            self.DisplayBoardWindow()
+            #self.DisplayBoardWindow()
 
             #if turn == bo.turn and bo.ready:
-            self.DisplayGuessesWindow()
+            print(self.board)
+            BlockSize = 50
+            letter = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
+            number = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+            for i,x in enumerate(letter):
+                for index,y in enumerate(number):
+                    rect = pygame.Rect(int(i)*BlockSize+BlockSize+50, int(index)*BlockSize+BlockSize+50, BlockSize, BlockSize)
+                    if len(self.boxes) < 100:
+
+                        self.boxes.append(rect)
+                        key = x + str(y)
+                        self.board[key] = [rect, "Carrier", ""]
+            opp_board = self.board
+            self.DisplayGuessesWindow(opp_board)
             #else:
             self.DisplayOpponentsGuesses()
 

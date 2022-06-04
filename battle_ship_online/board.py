@@ -12,7 +12,7 @@ class Game_data():
         init the board by creating empty grid
         """
         self.p1_board = self.create_empty_board()
-        self.p2_board = self.create_empty_board()
+        self.p2_board = self.p1_board
         self.p1Name = "player 1"
         self.p2Name = "player_2"
         self.ready = False

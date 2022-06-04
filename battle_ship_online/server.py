@@ -1,6 +1,6 @@
 import socket
 from _thread import *
-from board import Board
+from board import Game_data
 import pickle
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -21,7 +21,7 @@ print("[START] Waiting for a connection")
 
 connections = 0
 
-games = {0: Board(6, 7)}
+games = {0: Game_data}
 
 spectartor_ids = []
 specs = 0
@@ -65,7 +65,6 @@ def threaded_client(conn, game, spec=False):
 
         if connections % 2 == 0:
             currentId = "1"
-
         else:
             currentId = "2"
 
