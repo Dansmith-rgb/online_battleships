@@ -6,11 +6,11 @@ import time
 class Network:
     def __init__(self):
         self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.host = "192.168.1.97"
+        self.host = "192.168.1.230"
         self.port = 5555
         self.addr = (self.host, self.port)
-        self.boards = self.connect()
-        self.boards = pickle.loads(self.boards)
+        self.game_data = self.connect()
+        self.game_data = pickle.loads(self.game_data)
 
     def connect(self):
         """

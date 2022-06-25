@@ -1,3 +1,4 @@
+import ast
 import sys
 import pygame
 from constants import *
@@ -6,7 +7,7 @@ import time
 from ships import *
 import tkinter.messagebox as tk
 import tkinter
-
+import json
 
 pygame.init()
 class Game():
@@ -31,8 +32,9 @@ class Game():
         #self.board = {"A1": ["", "Battleship","1"]}
         self.board = {}
         self.opppsition_board = {}
+        self.bo = ""
         
-    def menu_screen(self):
+    def menu_screen(self,name):
         """
         This is the menu screen function
         """
@@ -75,7 +77,9 @@ class Game():
                     if button.collidepoint(event.pos):
                         #bo = self.connect()
                         print("Yo")
+                        self.bo = self.connect()
                         run = False
+                        self.run(name)
                         break
        
     def DrawGrid(self):
@@ -221,7 +225,7 @@ class Game():
             
             
 
-    def DisplayBoardWindow(self):
+    def DisplayBoardWindow(self, player):
         """
         This function draws most of the writing on the screen.
 
@@ -236,7 +240,7 @@ class Game():
             self.DrawGrid()
             
             
-            self.SideBar("BoardWindow")
+            self.SideBar("BoardWindow", player)
             
             
             pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
@@ -250,97 +254,115 @@ class Game():
                     
         
 
-    def SideBar(self, screen):
-        if screen == "guesses":
-            pass
-        else:
-            
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    pause_button = pygame.Rect(850,550,50,50)
-                    pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
-                    self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
-                    if pause_button.collidepoint(event.pos):
-                        self.Pause_menu()
-                        board_bg = pygame.image.load('imgs/board_bg.jpg')
-                        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                    
-                        rect = pygame.Rect(630, 150, 276, 350)
-                        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-                        for ship in self.ships:
-                            ship.draw_ship(self.win)
-                        
-                    pos = event.pos
-                    if event.button == 1:
-                        for ship in self.ships:
-                            if ship.collide(pos[0], pos[1]):
-                                for key,square in self.board.items():
-                                    if square[1] == ship.__class__.__name__:
-                                        square[1] = ""
-                                ship.ship_dragging = True
-                                print("hello")
-                                if len(self.current_ship) >= 1:
-                                    del self.current_ship[0]
-                                print(len(self.current_ship))
-                                self.current_ship.append(ship)
-
-                                break
-                elif event.type == pygame.MOUSEBUTTONUP:
-                    
-                    pos = event.pos
-                    x = pos[0]
-                    y = pos[1]
-                   
-                    if event.button == 1:
-                        for ship in self.ships:
-                            
-                            if ship in self.current_ship:
-                                ship.ship_dragging = False
-                                if ship.rect_1.x > 610 or ship.rect_1.x < 88 or ship.rect_1.y < 50:
-                                    ship.reset()
-                                    board_bg = pygame.image.load('imgs/board_bg.jpg')
-                                    self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                    
-                                    rect = pygame.Rect(630, 150, 276, 350)
-                                    pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-                                    ship.draw_ship(self.win)
-                                
-                                
-                                for key,square in self.board.items():
-                                    letter_num = key[1]
-                                    
-                                    
+    def SideBar(self, screen, player):
+        if player == "1":
+            if screen == "guesses":
+                pass
+            else:
+                board = n.send("get")
+                print(type(board.board))
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pause_button = pygame.Rect(850,550,50,50)
+                        pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
+                        self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
+                        if pause_button.collidepoint(event.pos):
+                            self.Pause_menu()
+                            board_bg = pygame.image.load('imgs/board_bg.jpg')
+                            self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
                                         
-                                    if square[0].collidepoint(x,y):
-                                        if square[1] == "":
-                                           
-                                                
+                            rect = pygame.Rect(630, 150, 276, 350)
+                            pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                            for ship in self.ships:
+                                ship.draw_ship(self.win)
+                            
+                        pos = event.pos
+                        if event.button == 1:
+                            for ship in self.ships:
+                                if ship.collide(pos[0], pos[1]):
+                                    for key,square in board.board.items():
+                                        if square[1] == ship.__class__.__name__:
+                                            square[1] = ""
+                                            n.send(f"update  {key} 1")
+                                            print(board.board)
+                                            #n.send(board.board)
+                                    ship.ship_dragging = True
+                                    print("hello")
+                                    if len(self.current_ship) >= 1:
+                                        del self.current_ship[0]
+                                    print(len(self.current_ship))
+                                    self.current_ship.append(ship)
+
+                                    break
+                    elif event.type == pygame.MOUSEBUTTONUP:
+                        
+                        pos = event.pos
+                        x = pos[0]
+                        y = pos[1]
+                    
+                        if event.button == 1:
+                            for ship in self.ships:
+                                
+                                if ship in self.current_ship:
+                                    ship.ship_dragging = False
+                                    if ship.rect_1.x > 610 or ship.rect_1.x < 88 or ship.rect_1.y < 50:
+                                        ship.reset()
+                                        board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                        
+                                        rect = pygame.Rect(630, 150, 276, 350)
+                                        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                        ship.draw_ship(self.win)
+                                    
+                                    
+                                    for key,square in board.board.items():
+                                        letter_num = key[1]
+                                        
+                                        
+                                        print(square)    
+                                        if square[0].collidepoint(x,y):
+                                            if square[1] == "":
                                             
-                                            if ship.valid_placement(square[0], 0):
-                                                if not ship.collide2(square, self.board, key):
+                                                    
+                                                
+                                                if ship.valid_placement(square[0], 0):
+                                                    if not ship.collide2(square, board, key, n, ship.__class__.__name__, player):
+                                                        ship.reset()
+                                                        board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                                        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                                        rect = pygame.Rect(630, 150, 276, 350)
+                                                        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                                
+                                                        ship.draw_ship(self.win)
+                                                        print("cant put ship there")
+                                                    else:
+                                                    
+                                                        
+                                                        ship.update_move(square[0].left,square[0].top)
+                                                        square[1] = ship.__class__.__name__
+                                                        print(board.board)
+                                                        
+                                                        #n.send(f"update [ {board.board} [ 1")
+                                                        self.index_box.clear()
+                                                        
+                                                        board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                                        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                                        
+                                                        rect = pygame.Rect(630, 150, 276, 350)
+                                                        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+
+                                                else:
                                                     ship.reset()
                                                     board_bg = pygame.image.load('imgs/board_bg.jpg')
                                                     self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
                                                     rect = pygame.Rect(630, 150, 276, 350)
                                                     pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-                                            
+                                                    
                                                     ship.draw_ship(self.win)
-                                                    print("cant put ship there")
-                                                else:
-                                                   
-                                                    
-                                                    ship.update_move(square[0].left,square[0].top)
-                                                    square[1] = ship.__class__.__name__
-                                                    self.index_box.clear()
-                                                    
-                                                    board_bg = pygame.image.load('imgs/board_bg.jpg')
-                                                    self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                                    
-                                                    rect = pygame.Rect(630, 150, 276, 350)
-                                                    pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-
+                                                
+                                                
                                             else:
                                                 ship.reset()
                                                 board_bg = pygame.image.load('imgs/board_bg.jpg')
@@ -349,68 +371,214 @@ class Game():
                                                 pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                                                 
                                                 ship.draw_ship(self.win)
-                                            
-                                            
-                                        else:
-                                            ship.reset()
-                                            board_bg = pygame.image.load('imgs/board_bg.jpg')
-                                            self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                            rect = pygame.Rect(630, 150, 276, 350)
-                                            pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-                                            
-                                            ship.draw_ship(self.win)
-                    print(self.board)                
-                elif event.type == pygame.MOUSEMOTION:
-                    for ship in self.ships:
-                        if ship.ship_dragging:
-                            pos = event.pos
-                            x = pos[0]
-                            y = pos[1]
-                            
-                            print(self.current_ship)
-                            if self.current_ship != [None] or len(self.current_ship) != 1:
-                                print(self.current_ship)
-                                print(x,y)
-                                #del self.current_ship[1]
-                                board_bg = pygame.image.load('imgs/board_bg.jpg')
-                                self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                rect = pygame.Rect(630, 150, 276, 350)
-                                pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-                                self.current_ship[0].update_move(x,y)
+                        #print(self.board)                
+                    elif event.type == pygame.MOUSEMOTION:
+                        for ship in self.ships:
+                            if ship.ship_dragging:
+                                pos = event.pos
+                                x = pos[0]
+                                y = pos[1]
                                 
-                    
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_r:
-                        self.current_ship[0].change_orientation(self.win)
-
-
-                
-                try:
-                    for ship in self.ships:
-                        ship.draw_ship(self.win)
-                except:
-                    pass
-                    
+                                print(self.current_ship)
+                                if self.current_ship != [None] or len(self.current_ship) != 1:
+                                    print(self.current_ship)
+                                    print(x,y)
+                                    #del self.current_ship[1]
+                                    board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                    self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                    rect = pygame.Rect(630, 150, 276, 350)
+                                    pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                    self.current_ship[0].update_move(x,y)
+                                    
                         
+                    elif event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_r:
+                            self.current_ship[0].change_orientation(self.win)
+
+
                     
+                    try:
+                        for ship in self.ships:
+                            ship.draw_ship(self.win)
+                    except:
+                        pass
+                        
+                            
+                        
 
-            pass
-        
+                #pass
+        else:
+            if screen == "guesses":
+                pass
+            else:
+                board = n.send("get")
+                
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        pause_button = pygame.Rect(850,550,50,50)
+                        pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
+                        self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
+                        if pause_button.collidepoint(event.pos):
+                            self.Pause_menu()
+                            board_bg = pygame.image.load('imgs/board_bg.jpg')
+                            self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                        
+                            rect = pygame.Rect(630, 150, 276, 350)
+                            pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                            for ship in self.ships:
+                                ship.draw_ship(self.win)
+                            
+                        pos = event.pos
+                        if event.button == 1:
+                            for ship in self.ships:
+                                if ship.collide(pos[0], pos[1]):
+                                    for key,square in board.board_2.items():
+                                        if square[1] == ship.__class__.__name__:
+                                            square[1] = ""
+                                            #n.send(f"update {key} {square[1]}")
+                                    ship.ship_dragging = True
+                                    print("hello")
+                                    if len(self.current_ship) >= 1:
+                                        del self.current_ship[0]
+                                    print(len(self.current_ship))
+                                    self.current_ship.append(ship)
+
+                                    break
+                    elif event.type == pygame.MOUSEBUTTONUP:
+                        
+                        pos = event.pos
+                        x = pos[0]
+                        y = pos[1]
+                    
+                        if event.button == 1:
+                            for ship in self.ships:
+                                
+                                if ship in self.current_ship:
+                                    ship.ship_dragging = False
+                                    if ship.rect_1.x > 610 or ship.rect_1.x < 88 or ship.rect_1.y < 50:
+                                        ship.reset()
+                                        board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                        
+                                        rect = pygame.Rect(630, 150, 276, 350)
+                                        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                        ship.draw_ship(self.win)
+                                    
+                                    
+                                    for key,square in board.board_2.items():
+                                        letter_num = key[1]
+                                        
+                                        
+                                            
+                                        if square[0].collidepoint(x,y):
+                                            if square[1] == "":
+                                            
+                                                    
+                                                
+                                                if ship.valid_placement(square[0], 0):
+                                                    #board = n.send("update")
+                                                    if not ship.collide2(square, board, key, n, ship.__class__.__name__, player):
+                                                        ship.reset()
+                                                        board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                                        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                                        rect = pygame.Rect(630, 150, 276, 350)
+                                                        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                                
+                                                        ship.draw_ship(self.win)
+                                                        print("cant put ship there")
+                                                    else:
+                                                    
+                                                        
+                                                        ship.update_move(square[0].left,square[0].top)
+                                                        #square[1] = ship.__class__.__name__
+                                                        # Call to server needed here
+                                                        self.index_box.clear()
+                                                        
+                                                        board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                                        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                                        
+                                                        rect = pygame.Rect(630, 150, 276, 350)
+                                                        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+
+                                                else:
+                                                    ship.reset()
+                                                    board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                                    self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                                    rect = pygame.Rect(630, 150, 276, 350)
+                                                    pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                                    
+                                                    ship.draw_ship(self.win)
+                                                
+                                                
+                                            else:
+                                                ship.reset()
+                                                board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                                self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                                rect = pygame.Rect(630, 150, 276, 350)
+                                                pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                                
+                                                ship.draw_ship(self.win)
+                        print(self.board)                
+                    elif event.type == pygame.MOUSEMOTION:
+                        for ship in self.ships:
+                            if ship.ship_dragging:
+                                pos = event.pos
+                                x = pos[0]
+                                y = pos[1]
+                                
+                                print(self.current_ship)
+                                if self.current_ship != [None] or len(self.current_ship) != 1:
+                                    print(self.current_ship)
+                                    print(x,y)
+                                    #del self.current_ship[1]
+                                    board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                    self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                    rect = pygame.Rect(630, 150, 276, 350)
+                                    pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                    self.current_ship[0].update_move(x,y)
+                                    
+                        
+                    elif event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_r:
+                            self.current_ship[0].change_orientation(self.win)
+
+
+                    
+                    try:
+                        for ship in self.ships:
+                            ship.draw_ship(self.win)
+                    except:
+                        pass
         
         
 
-    def DisplayGuessesWindow(self,opp_board):
+    def DisplayGuessesWindow(self,player):
         run = True
         while run:
+            opp_board = n.send("get")
             self.DrawGrid()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    n.disconnect()
                     pygame.quit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     print("RECOGNISED")
                     mouse = event.pos
-                    click_pos = self.click_grid(mouse, opp_board)
-                    for key, value in opp_board.items():
+                    if player == "1":
+                        click_pos = self.click_grid(mouse, opp_board.board_2)
+                        for key, value in opp_board.board_2.items():
+                            if click_pos == key:
+                                opp_board = n.send(f"guess {key} {player}")
+                    else:
+                        click_pos = self.click_grid(mouse, opp_board.board)
+                        for key, value in opp_board.board.items():
+                            if click_pos == key:
+                                opp_board = n.send(f"guess {key} {player}")
+                if player == "1":
+                    print("hellooofjdiryuhrzksbtgrkhybsxzlbh")     
+                    for key, value in opp_board.board_2.items():
                         if value[2] == "Hit":
                             topleft = value[0].topleft
                             bottomright = value[0].bottomright
@@ -424,36 +592,29 @@ class Game():
                             right = value[0].right
                             left = value[0].left
                             pygame.draw.circle(self.win, WHITE, ((right+left)/2, (top+bottom)/2), 10)
-                        if click_pos == key:
-                            if value[2] == "":
-                                
-                                print("yokyhpotyohn")
-                                if value[1] == "Carrier" or value[1] == "Battleship" or value[1] == "Submarine" or value[1] == "Destroyer" or value[1] == "Cruiser":
-                                    print("yokyhpotyohn")
-                                    topleft = value[0].topleft
-                                    bottomright = value[0].bottomright
-                                    topright = value[0].topright
-                                    bottomleft = value[0].bottomleft
-                                    pygame.draw.line(self.win, WHITE, (topleft),(bottomright))
-                                    pygame.draw.line(self.win, WHITE, (topright),(bottomleft))
-                                    value[2] = "Hit"
-                                    run = False
-                                    #draw a cross if a ship was hit
-                                    pass
-                                else:
-                                    top = value[0].top
-                                    bottom = value[0].bottom
-                                    right = value[0].right
-                                    left = value[0].left
-                                    pygame.draw.circle(self.win, WHITE, ((right+left)/2, (top+bottom)/2), 10)
-                                    value[2] = "Miss"
-                                    run = False
-                                #draw circle if not hit a ship
-                            else:
-                                root = tkinter.Tk()
-                                root.overrideredirect(1)
-                                root.withdraw()
-                                tk.showerror("Select different box", "You can't choose a box you have already chosen!")
+                        run = False
+                else:
+                    for key, value in opp_board.board.items():
+                        if value[2] == "Hit":
+                            topleft = value[0].topleft
+                            bottomright = value[0].bottomright
+                            topright = value[0].topright
+                            bottomleft = value[0].bottomleft
+                            pygame.draw.line(self.win, WHITE, (topleft),(bottomright))
+                            pygame.draw.line(self.win, WHITE, (topright),(bottomleft))
+                        if value[2] == "Miss":
+                            top = value[0].top
+                            bottom = value[0].bottom
+                            right = value[0].right
+                            left = value[0].left
+                            pygame.draw.circle(self.win, WHITE, ((right+left)/2, (top+bottom)/2), 10)
+                        run = False
+
+                            #else:
+                                #root = tkinter.Tk()
+                                #root.overrideredirect(1)
+                                #root.withdraw()
+                                #tk.showerror("Select different box", "You can't choose a box you have already chosen!")
             pygame.display.flip()
 
     def connect(self):
@@ -462,20 +623,20 @@ class Game():
         """
         global n
         n = Network()
-        return n.boards
+        return n.game_data
 
     def run(self, name):
         global player
         starting = True
         run = True
         click = False
-        #player = bo.start_user
-        #bo = n.send("name " + name)
+        player = self.bo.start_user
+        game_data = n.send("name " + name)
         clock = pygame.time.Clock()
-        while starting:
-            self.menu_screen()
-            starting = False
-            break
+        #while starting:
+            #self.menu_screen()
+            #starting = False
+            #break
 
         board_bg = pygame.image.load('imgs/board_bg.jpg')
         self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
@@ -484,7 +645,7 @@ class Game():
         
         while run:
             
-            #bo = n.send("get")
+            gdata = n.send("get")
             #turn = bo.start_user
             """
             if player.colour == "1":
@@ -499,26 +660,13 @@ class Game():
                     pygame.quit()
                 
             
-            #self.DisplayBoardWindow()
-
-            #if turn == bo.turn and bo.ready:
-            print(self.board)
-            BlockSize = 50
-            letter = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
-            number = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
-            for i,x in enumerate(letter):
-                for index,y in enumerate(number):
-                    rect = pygame.Rect(int(i)*BlockSize+BlockSize+50, int(index)*BlockSize+BlockSize+50, BlockSize, BlockSize)
-                    if len(self.boxes) < 100:
-
-                        self.boxes.append(rect)
-                        key = x + str(y)
-                        self.board[key] = [rect, "Carrier", ""]
-            opp_board = self.board
-            self.DisplayGuessesWindow(opp_board)
-            #else:
-            self.DisplayOpponentsGuesses()
-
+            self.DisplayBoardWindow(player)
+            #print(gdata.turn)
+            if player == gdata.turn:
+                self.DisplayGuessesWindow(player)
+            else:
+                self.DisplayOpponentsGuesses()
+            
             
 
             
@@ -534,6 +682,6 @@ class Game():
 
 if __name__ == '__main__':
     name = input("Please type your name: ")               
-    Game().run(name)
+    Game().menu_screen(name)
      
 

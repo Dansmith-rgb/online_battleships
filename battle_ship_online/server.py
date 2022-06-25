@@ -1,11 +1,15 @@
 import socket
 from _thread import *
+
+from numpy import square
 from board import Game_data
 import pickle
+import json
+import ast
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-server = "192.168.1.97"
+server = "192.168.1.230"
 port = 5555
 
 # trying to set up socket to listen for incoming connectins.
@@ -21,7 +25,7 @@ print("[START] Waiting for a connection")
 
 connections = 0
 
-games = {0: Game_data}
+games = {0: Game_data()}
 
 spectartor_ids = []
 specs = 0
@@ -61,21 +65,21 @@ def threaded_client(conn, game, spec=False):
 
     if not spec:
         name = None
-        bo = games[game]
+        gd = games[game]
 
         if connections % 2 == 0:
             currentId = "1"
         else:
             currentId = "2"
 
-        bo.start_user = currentId
+        gd.start_user = currentId
 
         # Pickle the object and send it to the server
-        data_string = pickle.dumps(bo)
+        data_string = pickle.dumps(gd)
         # If r(second player of the game) has joined then make the
         # game ready
         if currentId == "2":
-            bo.ready = True
+            gd.ready = True
         conn.send(data_string)
         connections += 1
 
@@ -91,28 +95,46 @@ def threaded_client(conn, game, spec=False):
                 if not d:
                     break
                 else:
+                    #print(data)
+                    if data.count("update") > 0:
+                        all = data.split(" ")
+                        name = all[1]
+                        sqaure_number = all[2]
+                        #print(ast.literal_eval(sqaure_number))
+                        print(gd.board[sqaure_number])
+                        player = all[3]
+                        if player == "1":
+                            
+                            gd.board[sqaure_number][1] = name
+                            print(gd.board)
+                        else:
+                            gd.board_2 = sqaure_number
+                            #print(gd.board)
+                        #square_info = all[1]
                     # If the data has select and space and all the
                     # other variables then it will go inside the if statement
-                    if data.count("select") > 0:
+                    if data.count("guess") > 0:
                         # It splits up the data it has been sent
                         all = data.split(" ")
-                        row = int(all[1])
-                        col = int(all[2])
-                        color = all[3]
-                       
-                        # It then changes who's turn it is
-                        if bo.turn == "r":
-                            bo.turn = "y"
+                        sqaure_number = all[1]
+                        player = all[2]
+                        if player == "1": 
+                            gd.check_guesses(gd.board_2, sqaure_number)
                         else:
-                            bo.turn = "r"
+                            gd.check_guesses(gd.board, sqaure_number)
+                        # It then changes who's turn it is
+                        if gd.turn == "1":
+                            gd.turn = "2"
+                        else:
+                            gd.turn = "1"
 
                     # If the data has winner y in it then set the board winner to y
-                    if data == "winner y":
-                        bo.winner = "y"
+                    if data == "winner 1":
+                        gd.winner = "y"
                         print("[GAME] Player y won in game", game)
                     # If the data has winner r in it then set the board winner to r
                     if data == "winner r":
-                        bo.winner = "r"
+                        gd.winner = "r"
 
                     # If data has name and something after then check
                     # currentId and set players name
@@ -120,13 +142,13 @@ def threaded_client(conn, game, spec=False):
 
                         name = data.split(" ")[1]
 
-                        if currentId == "y":
-                            bo.p2Name = name
-                        elif currentId == "r":
-                            bo.p1Name = name
+                        if currentId == "2":
+                            gd.p2Name = name
+                        elif currentId == "1":
+                            gd.p1Name = name
 
                     # Package all data up to send to players
-                    sendData = pickle.dumps(bo)
+                    sendData = pickle.dumps(gd)
 
                 # Send all data to player
                 conn.sendall(sendData)
@@ -160,10 +182,10 @@ while True:
         if g == -1:
             try:
                 g = list(games.keys())[-1] + 1
-                games[g] = Board(6, 7)
+                games[g] = Game_data()
             except:
                 g = 0
-                games[g] = Board(6, 7)
+                games[g] = Game_data()
 
         print("[DATA] Number of Connections:", connections + 1)
         print("[DATA] Number of Games:", len(games))
