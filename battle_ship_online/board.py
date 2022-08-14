@@ -1,7 +1,10 @@
-import numpy as np
-from constants import ROWS, COLS, WHITE
-import pygame
 import copy
+import time
+
+import numpy as np
+import pygame
+
+from constants import COLS, ROWS, WHITE
 
 """
 Stores the state of the board
@@ -22,7 +25,14 @@ class Game_data:
         self.p2Name = "player 2"
         self.ready = False
         self.turn = "1"
-        
+        self.winner = None
+        self.time1 = 60
+        self.time2 = 60
+        self.storedTime1 = 0
+        self.storedTime2 = 0
+        self.startTime = time.time()
+        self.p1_ready = False
+        self.p2_ready = False
 
     def check_for_win(self, player):
         pass
@@ -30,7 +40,7 @@ class Game_data:
     def check_guesses(self, board, key):
         
         #draw circle if not hit a ship
-        print(board[key][2])
+        #print(board[key][1])
         if board[key][2] == "":
             
             
@@ -43,7 +53,7 @@ class Game_data:
             else:
                 
                 board[key][2] = "Miss"
-                print("hello")
+                #print("hello")
                 #run = False
                 
     
@@ -68,7 +78,7 @@ class Game_data:
                     key = f"{x + str(y)}"
                     self.board[key] = [rect, "", ""]
 
-        print(self.board)
+        #print(self.board)
         
     def create_empty_board_2(self):
         BlockSize = 50
@@ -83,7 +93,7 @@ class Game_data:
                     key = x + str(y)
                     self.board_2[key] = [rect, "", ""]
 
-        print(self.board)
+        #print(self.board)
 
     def get_board(self):
         """

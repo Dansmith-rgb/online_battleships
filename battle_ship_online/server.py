@@ -1,3 +1,4 @@
+import datetime
 import socket
 from _thread import *
 
@@ -101,15 +102,16 @@ def threaded_client(conn, game, spec=False):
                         name = all[1]
                         sqaure_number = all[2]
                         #print(ast.literal_eval(sqaure_number))
-                        print(gd.board[sqaure_number])
+                        #print(gd.board[sqaure_number])
                         player = all[3]
                         if player == "1":
-                            
+                            print("Player 1")
                             gd.board[sqaure_number][1] = name
-                            print(gd.board)
-                        else:
-                            gd.board_2 = sqaure_number
                             #print(gd.board)
+                        else:
+                            print("PLayer 2")
+                            gd.board_2[sqaure_number][1] = name
+                            print(gd.board_2)
                         #square_info = all[1]
                     # If the data has select and space and all the
                     # other variables then it will go inside the if statement
@@ -120,6 +122,7 @@ def threaded_client(conn, game, spec=False):
                         player = all[2]
                         if player == "1": 
                             gd.check_guesses(gd.board_2, sqaure_number)
+                            #print(gd.board_2)
                         else:
                             gd.check_guesses(gd.board, sqaure_number)
                         # It then changes who's turn it is
@@ -128,13 +131,20 @@ def threaded_client(conn, game, spec=False):
                         else:
                             gd.turn = "1"
 
+
+                    if data == "player 1 ready":
+                        gd.p1_ready = True
+
+                    if data == "player 2 ready":
+                        gd.p2_ready = True
                     # If the data has winner y in it then set the board winner to y
                     if data == "winner 1":
-                        gd.winner = "y"
-                        print("[GAME] Player y won in game", game)
+                        gd.winner = "1"
+                        print(f"[GAME] Player {gd.p1Name} won in game {game}")
                     # If the data has winner r in it then set the board winner to r
                     if data == "winner r":
-                        gd.winner = "r"
+                        gd.winner = "2"
+                        print(f"[GAME] Player {gd.p2Name} won in game {game}")
 
                     # If data has name and something after then check
                     # currentId and set players name
