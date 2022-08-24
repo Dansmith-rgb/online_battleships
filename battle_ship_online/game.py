@@ -25,6 +25,7 @@ class Game():
         self.pos = 0
         self.big_font = pygame.font.SysFont("comicsans", 50)
         self.medium_font = pygame.font.SysFont("comicsans", 30)
+        self.small_font = pygame.font.SysFont("comicsans", 20)
         self.boxes = []
         self.ships = [Submarine(self.win, 5, 5, "1"), Destroyer(self.win, 4, 4, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1", 100, 100)]
         self.current_ship = [None]
@@ -239,23 +240,34 @@ class Game():
         total_seconds = 20
         pressed = False
         players_ready = False
-        print(player)
+        self.win.fill(BLACK)
         if player == "1":
             board = n.send("player 1 ready")
         else:
             board = n.send("player 2 ready")
-        start_time = datetime.datetime.now()
-        end_time = start_time + datetime.timedelta(seconds=30)
+        
         while pressed == False:
             board = n.send("get")
+            
             if board.p1_ready == True and board.p2_ready == True:
                 players_ready = True
                 pressed=True
+            player_waiting = self.big_font.render("Waiting for other player", 1, (0,255,0))
+            self.win.blit( player_waiting, (WIDTH / 2 - player_waiting.get_width() / 2, 500))
+            pygame.display.flip()
         if players_ready == True:
+            
+            start_time = datetime.datetime.now()
+            end_time = start_time + datetime.timedelta(seconds=30)
             while datetime.datetime.now() < end_time:
-                self.SideBar("BoardWindow", player, run)
+                
+                
+                self.SideBar("BoardWindow", player, run, end_time)
                 self.DrawGrid()
-                print(run)
+                player_placing = self.small_font.render("Place all your ships on the grid", 1, (0,255,0))
+                self.win.blit(player_placing, (170, 20))
+                
+                
                 counter += 1
                 pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
                 self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
@@ -284,15 +296,7 @@ class Game():
                             else:
                                 Battleship += 1
 
-            if Destroyer == 2:
-                board = n.send("winner 1")
-            elif Submarine == 3:
-                board = n.send("winner 1")
-            elif Cruiser == 3:
-                board = n.send("winner 1")
-            elif Battleship == 4:
-                board = n.send("winner 1")
-            elif Carrier == 5:
+            if Destroyer == 2 and Submarine == 3 and Cruiser == 3 and Battleship == 4 and Carrier == 5:
                 board = n.send("winner 1")
             else:
                 pass
@@ -318,23 +322,38 @@ class Game():
                 pass
         
 
-        print(Destroyer)
+        
                 
 
     def DisplayOpponentsGuesses(self):
-        #print("hi")
-        run = True
-        
         board_bg = pygame.image.load('imgs/board_bg.jpg')
         self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
                                         
         rect = pygame.Rect(630, 150, 276, 350)
         pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+        pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
+        self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pause_button = pygame.Rect(850,550,50,50)
+                pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
+                self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
+                if pause_button.collidepoint(event.pos):
+                    self.Pause_menu()
+                    board_bg = pygame.image.load('imgs/board_bg.jpg')
+                    self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                
+                    rect = pygame.Rect(630, 150, 276, 350)
+                    pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+        
         
         for ship in self.ships:
             ship.draw_ship(self.win)
         self.DrawGrid()
-        
+        player_guessing = self.small_font.render("Oppponent is guessing where your ships are", 1, (0,255,0))
+        self.win.blit( player_guessing, (170, 20))
         board = n.send("get")
         
         if player == "1":   
@@ -347,7 +366,6 @@ class Game():
                     pygame.draw.line(self.win, WHITE, (topleft),(bottomright))
                     pygame.draw.line(self.win, WHITE, (topright),(bottomleft))
                     self.checkwinner(player,board)
-                    #Pdb.set_trace(self)
                 if value[2] == "Miss":
                     top = value[0].top
                     bottom = value[0].bottom
@@ -366,7 +384,6 @@ class Game():
                     pygame.draw.line(self.win, WHITE, (topleft),(bottomright))
                     pygame.draw.line(self.win, WHITE, (topright),(bottomleft))
                     self.checkwinner(player,board)
-                    #Pdb.set_trace(self)
                 if value[2] == "Miss":
                     top = value[0].top
                     bottom = value[0].bottom
@@ -378,7 +395,16 @@ class Game():
             
         
 
-    def SideBar(self, screen, player, run):
+    def SideBar(self, screen, player, run, end_time):
+        board_bg = pygame.image.load('imgs/board_bg.jpg')
+        self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                    
+        rect = pygame.Rect(630, 150, 276, 350)
+        pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+        player_waiting = self.medium_font.render(f"{end_time - datetime.datetime.now()}", 1, (0,255,0))
+        self.win.blit( player_waiting, (740, 100))
+        for ship in self.ships:
+            ship.draw_ship(self.win)
         if player == "1":
             
             if screen == "guesses":
@@ -402,6 +428,8 @@ class Game():
                                         
                             rect = pygame.Rect(630, 150, 276, 350)
                             pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                            player_waiting = self.medium_font.render(f"{end_time - datetime.datetime.now()}", 1, (0,255,0))
+                            self.win.blit( player_waiting, (740, 100))
                             for ship in self.ships:
                                 ship.draw_ship(self.win)
                             
@@ -474,6 +502,8 @@ class Game():
                                                         
                                                         rect = pygame.Rect(630, 150, 276, 350)
                                                         pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                                        player_waiting = self.medium_font.render(f"{end_time - datetime.datetime.now()}", 1, (0,255,0))
+                                                        self.win.blit(player_waiting, (740, 100))
 
                                                 else:
                                                     ship.reset()
@@ -503,10 +533,12 @@ class Game():
                                 
                                 if self.current_ship != [None] or len(self.current_ship) != 1:
                                     
-                                    board_bg = pygame.image.load('imgs/board_bg.jpg')
-                                    self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                    rect = pygame.Rect(630, 150, 276, 350)
-                                    pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                    #board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                    #self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                    #rect = pygame.Rect(630, 150, 276, 350)
+                                    #pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                    #player_waiting = self.medium_font.render(f"{end_time - datetime.datetime.now()}", 1, (0,255,0))
+                                    #self.win.blit(player_waiting, (740, 100))
                                     self.current_ship[0].update_move(x,y)
                                     
                         
@@ -619,7 +651,8 @@ class Game():
                                                         
                                                         rect = pygame.Rect(630, 150, 276, 350)
                                                         pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-
+                                                        player_waiting = self.medium_font.render(f"{end_time - datetime.datetime.now()}", 1, (0,255,0))
+                                                        self.win.blit(player_waiting, (740, 100))
                                                 else:
                                                     ship.reset()
                                                     board_bg = pygame.image.load('imgs/board_bg.jpg')
@@ -651,10 +684,10 @@ class Game():
                                     print(self.current_ship)
                                     print(x,y)
                                     #del self.current_ship[1]
-                                    board_bg = pygame.image.load('imgs/board_bg.jpg')
-                                    self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                    rect = pygame.Rect(630, 150, 276, 350)
-                                    pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
+                                    #board_bg = pygame.image.load('imgs/board_bg.jpg')
+                                    #self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                    #rect = pygame.Rect(630, 150, 276, 350)
+                                    #pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                                     self.current_ship[0].update_move(x,y)
                                     
                         
@@ -665,8 +698,11 @@ class Game():
 
                     
                     try:
+                        #player_waiting = self.medium_font.render(f"{end_time - datetime.datetime.now()}", 1, (0,255,0))
+                        #self.win.blit(player_waiting, (740, 100))
                         for ship in self.ships:
                             ship.draw_ship(self.win)
+                        pass
                     except:
                         pass
         
@@ -681,12 +717,24 @@ class Game():
         rect = pygame.Rect(630, 150, 276, 350)
         pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
         self.DrawGrid()
-        
+        player_guessing = self.small_font.render("It's your turn to guess where the opponents ship may be", 1, (0,255,0))
+        self.win.blit( player_guessing, (170, 20))
+        pause_button_img = pygame.image.load('imgs/png-transparent-pause-logo-computer-icons-button-media-player-pause-button-rectangle-black-internet-thumbnail.png')
+        self.win.blit(pygame.transform.scale(pause_button_img, (50,50)), (850,550))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 n.disconnect()
                 pygame.quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
+                pause_button = pygame.Rect(850,550,50,50)
+                
+                if pause_button.collidepoint(event.pos):
+                    self.Pause_menu()
+                    board_bg = pygame.image.load('imgs/board_bg.jpg')
+                    self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
+                                
+                    rect = pygame.Rect(630, 150, 276, 350)
+                    pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                 print("RECOGNISED")
                 mouse = event.pos
                 if player == "1":
@@ -742,6 +790,23 @@ class Game():
                                 #tk.showerror("Select different box", "You can't choose a box you have already chosen!")
             #pygame.display.flip()
 
+    def ending_screen(self, winner, player):
+        while True:
+            self.win.fill(BLACK)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    n.disconnect()
+                    pygame.quit()
+
+            if player == winner:   
+                player_guessing = self.big_font.render("You won!", 1, (0,255,0))
+                self.win.blit( player_guessing, (170, 50))
+            else:
+                player_guessing = self.big_font.render("You lost!", 1, (0,255,0))
+                self.win.blit( player_guessing, (170, 50))
+            restart_button = pygame.Rect(425,400,50,50)
+            quit_button = pygame.Rect(500,500,50,50)
+
     def connect(self):
         """
         connect to server function
@@ -770,6 +835,7 @@ class Game():
         #self.DrawGrid()
         
         self.DisplayBoardWindow(player)
+        
         while run:
             
             gdata = n.send("get")
