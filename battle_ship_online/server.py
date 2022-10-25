@@ -101,17 +101,15 @@ def threaded_client(conn, game, spec=False):
                         all = data.split(" ")
                         name = all[1]
                         sqaure_number = all[2]
-                        #print(ast.literal_eval(sqaure_number))
-                        #print(gd.board[sqaure_number])
+                        
                         player = all[3]
                         if player == "1":
-                            print("Player 1")
+                            
                             gd.board[sqaure_number][1] = name
-                            print(f"board 1: {gd.board}")
                         else:
-                            print("PLayer 2")
+                            
                             gd.board_2[sqaure_number][1] = name
-                            print(f"board 2: {gd.board_2}")
+
                         #square_info = all[1]
                     # If the data has select and space and all the
                     # other variables then it will go inside the if statement
@@ -122,7 +120,7 @@ def threaded_client(conn, game, spec=False):
                         player = all[2]
                         if player == "1": 
                             gd.check_guesses(gd.board_2, sqaure_number)
-                            #print(gd.board_2)
+
                         else:
                             gd.check_guesses(gd.board, sqaure_number)
                         # It then changes who's turn it is

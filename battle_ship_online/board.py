@@ -1,10 +1,5 @@
-import copy
 import time
-
-import numpy as np
 import pygame
-
-from constants import COLS, ROWS, WHITE
 
 """
 Stores the state of the board
@@ -36,27 +31,22 @@ class Game_data:
         self.reset1 = False
         self.reset2 = False
 
-    def check_for_win(self, player):
-        pass
+    
 
     def check_guesses(self, board, key):
         
-        #draw circle if not hit a ship
-        #print(board[key][1])
+        
         if board[key][2] == "":
             
             
             if board[key][1] == "Carrier" or board[key][1] == "Battleship" or board[key][1] == "Submarine" or board[key][1] == "Destroyer" or board[key][1] == "Cruiser":
                 
                 board[key][2] = "Hit"
-                #run = False
-                #draw a cross if a ship was hit
-                pass
+                
             else:
                 
                 board[key][2] = "Miss"
-                #print("hello")
-                #run = False
+                
                 
     
 
@@ -80,7 +70,6 @@ class Game_data:
                     key = f"{x + str(y)}"
                     self.board[key] = [rect, "", ""]
 
-        #print(self.board)
         
     def create_empty_board_2(self):
         BlockSize = 50
