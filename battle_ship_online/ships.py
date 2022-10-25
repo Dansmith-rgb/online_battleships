@@ -1758,10 +1758,10 @@ class Battleship(Ship):
             self.rect_4.y = self.rect_3.y + 50
     
     def draw_ship(self, board):
-        pygame.draw.rect(board, BLACK, self.rect_1, 0)
-        pygame.draw.rect(board, BLACK, self.rect_2, 0)
-        pygame.draw.rect(board, BLACK, self.rect_3, 0)
-        pygame.draw.rect(board, BLACK, self.rect_4, 0)
+        pygame.draw.rect(board, GREYLIGHT, self.rect_1, 0)
+        pygame.draw.rect(board, GREYLIGHT, self.rect_2, 0)
+        pygame.draw.rect(board, GREYLIGHT, self.rect_3, 0)
+        pygame.draw.rect(board, GREYLIGHT, self.rect_4, 0)
 
 
 class Cruiser(Ship):
@@ -2388,9 +2388,9 @@ class Cruiser(Ship):
             self.rect_3.y = self.rect_2.y + 50
 
     def draw_ship(self, board):
-        pygame.draw.rect(board, BLACK, self.rect_1, 0)
-        pygame.draw.rect(board, BLACK, self.rect_2, 0)
-        pygame.draw.rect(board, BLACK, self.rect_3, 0)
+        pygame.draw.rect(board, GREYMEDIUM, self.rect_1, 0)
+        pygame.draw.rect(board, GREYMEDIUM, self.rect_2, 0)
+        pygame.draw.rect(board, GREYMEDIUM, self.rect_3, 0)
 
 
 class Submarine(Ship):
@@ -3015,9 +3015,9 @@ class Submarine(Ship):
             self.rect_3.y = self.rect_2.y + 50
 
     def draw_ship(self, board):
-        pygame.draw.rect(board, BLACK, self.rect_1, 0)
-        pygame.draw.rect(board, BLACK, self.rect_2, 0)
-        pygame.draw.rect(board, BLACK, self.rect_3, 0)
+        pygame.draw.rect(board, GREYDARK, self.rect_1, 0)
+        pygame.draw.rect(board, GREYDARK, self.rect_2, 0)
+        pygame.draw.rect(board, GREYDARK, self.rect_3, 0)
 
 
     
@@ -3437,7 +3437,7 @@ class Destroyer(Ship):
             self.rect_2.y = self.rect_1.y + 50
 
     def draw_ship(self, board):
-        pygame.draw.rect(board, BLACK, self.rect_1, 0)
-        pygame.draw.rect(board, BLACK, self.rect_2, 0)
+        pygame.draw.rect(board, GREYVDARK, self.rect_1, 0)
+        pygame.draw.rect(board, GREYVDARK, self.rect_2, 0)
 
 

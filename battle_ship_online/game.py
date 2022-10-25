@@ -1,6 +1,7 @@
 import ast
 import datetime
 from pdb import Pdb
+import re
 import sys
 import pygame
 from constants import *
@@ -19,7 +20,7 @@ class Game():
         self.HEIGHT = HEIGHT
         
         pygame.font.init()
-        
+        pygame.mixer.init()
         self.win = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
         pygame.display.set_caption("Online battleships")
         self.pos = 0
@@ -30,12 +31,15 @@ class Game():
         self.ships = [Submarine(self.win, 5, 5, "1"), Destroyer(self.win, 4, 4, "1"), Cruiser(self.win, 720, 220, "1"), Battleship(self.win, 730, 230, "1"), Carrier(self.win, 740, 240, "1", 100, 100)]
         self.current_ship = [None]
         self.index_box = []
-        self.mute_music = False
+        self.mute_music = True # Change back to false 
         self.leave = False
         #self.board = {"A1": ["", "Battleship","1"]}
         self.board = {}
         self.opppsition_board = {}
         self.bo = ""
+        self.hit_sound = pygame.mixer.Sound("imgs/hq-explosion-6288.wav")
+        self.miss_sound = pygame.mixer.Sound("imgs/splash-by-blaukreuz-6261.wav")
+        self.num_of_replays = 0
         
     def menu_screen(self,name):
         """
@@ -83,6 +87,7 @@ class Game():
                         self.bo = self.connect()
                         run = False
                         self.run(name)
+
                         break
        
     def DrawGrid(self):
@@ -283,7 +288,7 @@ class Game():
             for ship in self.ships:
                 for key,value in board.board_2.items():
                     if value[1] == ship.__class__.__name__:
-                        print(ship.__class__.__name__)
+                        #print(ship.__class__.__name__)
                         if value[2] == "Hit":
                             if ship.__class__.__name__ == "Destroyer":
                                 Destroyer += 1
@@ -356,9 +361,12 @@ class Game():
         self.win.blit( player_guessing, (170, 20))
         board = n.send("get")
         
-        if player == "1":   
+        if player == "1":
+            
+            
             for key, value in board.board.items():
                 if value[2] == "Hit":
+                    self.num_of_replays += 1
                     topleft = value[0].topleft
                     bottomright = value[0].bottomright
                     topright = value[0].topright
@@ -366,17 +374,34 @@ class Game():
                     pygame.draw.line(self.win, WHITE, (topleft),(bottomright))
                     pygame.draw.line(self.win, WHITE, (topright),(bottomleft))
                     self.checkwinner(player,board)
+                    #print(self.num_of_replays)
+                    if self.num_of_replays == 1:
+                        if not self.mute_music:
+                             
+                            self.hit_sound.play()
+                            print("sound opp side 18989090293289378")
+                            #print(self.num_of_replays)
                 if value[2] == "Miss":
+                    self.num_of_replays += 1
+                    
                     top = value[0].top
                     bottom = value[0].bottom
                     right = value[0].right
                     left = value[0].left
                     pygame.draw.circle(self.win, WHITE, ((right+left)/2, (top+bottom)/2), 10)
+                    #print(self.num_of_replays)
+                    if self.num_of_replays == 1:
+                        if not self.mute_music:
+                            self.miss_sound.play()
+                            print("sound opp side 6475")
+                            #print(self.num_of_replays)
                 #pygame.time.delay(3000)
                 
         else:
+            
             for key, value in board.board_2.items():
                 if value[2] == "Hit":
+                    self.num_of_replays += 1
                     topleft = value[0].topleft
                     bottomright = value[0].bottomright
                     topright = value[0].topright
@@ -384,12 +409,25 @@ class Game():
                     pygame.draw.line(self.win, WHITE, (topleft),(bottomright))
                     pygame.draw.line(self.win, WHITE, (topright),(bottomleft))
                     self.checkwinner(player,board)
+                    #print(self.num_of_replays)
+                    if self.num_of_replays == 1:
+                        if not self.mute_music:
+                            self.hit_sound.play()
+                            print("sound opp side 1")
+                            #print(self.num_of_replays)
                 if value[2] == "Miss":
+                    self.num_of_replays += 1
                     top = value[0].top
                     bottom = value[0].bottom
                     right = value[0].right
                     left = value[0].left
                     pygame.draw.circle(self.win, WHITE, ((right+left)/2, (top+bottom)/2), 10)
+                    #print(self.num_of_replays)
+                    if self.num_of_replays == 1:
+                        if not self.mute_music:
+                            self.miss_sound.play()
+                            print("sound opp side 2")
+                            #print(self.num_of_replays)
                 #pygame.time.delay(3000)
                 
             
@@ -402,7 +440,7 @@ class Game():
         rect = pygame.Rect(630, 150, 276, 350)
         pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
         player_waiting = self.medium_font.render(f"{end_time - datetime.datetime.now()}", 1, (0,255,0))
-        self.win.blit( player_waiting, (740, 100))
+        self.win.blit( player_waiting, (790, 100))
         for ship in self.ships:
             ship.draw_ship(self.win)
         if player == "1":
@@ -411,7 +449,7 @@ class Game():
                 pass
             else:
                 board = n.send("get")
-                print(type(board.board))
+                #print(type(board.board))
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         run = False
@@ -441,7 +479,7 @@ class Game():
                                         if square[1] == ship.__class__.__name__:
                                             square[1] = ""
                                             n.send(f"update  {key} 1")
-                                           
+                                            
                                     ship.ship_dragging = True
                                     
                                     if len(self.current_ship) >= 1:
@@ -478,7 +516,7 @@ class Game():
                                             if square[1] == "":
                                             
                                                 if ship.valid_placement(square[0], 0):
-                                                    print(key)
+                                                    #print(key)
                                                     
                                                     if not ship.collide2(square, board, key, n, ship.__class__.__name__, player):
                                                         ship.reset()
@@ -533,12 +571,7 @@ class Game():
                                 
                                 if self.current_ship != [None] or len(self.current_ship) != 1:
                                     
-                                    #board_bg = pygame.image.load('imgs/board_bg.jpg')
-                                    #self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
-                                    #rect = pygame.Rect(630, 150, 276, 350)
-                                    #pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-                                    #player_waiting = self.medium_font.render(f"{end_time - datetime.datetime.now()}", 1, (0,255,0))
-                                    #self.win.blit(player_waiting, (740, 100))
+                                    
                                     self.current_ship[0].update_move(x,y)
                                     
                         
@@ -671,7 +704,7 @@ class Game():
                                                 pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
                                                 
                                                 ship.draw_ship(self.win)
-                        print(self.board)                
+                        #print(self.board)                
                     elif event.type == pygame.MOUSEMOTION:
                         for ship in self.ships:
                             if ship.ship_dragging:
@@ -679,10 +712,10 @@ class Game():
                                 x = pos[0]
                                 y = pos[1]
                                 
-                                print(self.current_ship)
+                                #print(self.current_ship)
                                 if self.current_ship != [None] or len(self.current_ship) != 1:
-                                    print(self.current_ship)
-                                    print(x,y)
+                                    #print(self.current_ship)
+                                    #print(x,y)
                                     #del self.current_ship[1]
                                     #board_bg = pygame.image.load('imgs/board_bg.jpg')
                                     #self.win.blit(pygame.transform.scale(board_bg, (WIDTH,HEIGHT)), (0,0))
@@ -735,14 +768,14 @@ class Game():
                                 
                     rect = pygame.Rect(630, 150, 276, 350)
                     pygame.draw.rect(self.win, WHITE, rect, 0, -1, 20, -1, 20, -1)
-                print("RECOGNISED")
+                #print("RECOGNISED")
                 mouse = event.pos
                 if player == "1":
                     click_pos = self.click_grid(mouse, opp_board.board_2)
-                    print(click_pos)
+                    #print(click_pos)
                     for key, value in opp_board.board_2.items():
                         if click_pos == key:
-                            print("finally")
+                            #print("finally")
                             opp_board = n.send(f"guess {key} {player}")
                 else:
                     click_pos = self.click_grid(mouse, opp_board.board)
@@ -750,37 +783,64 @@ class Game():
                         if click_pos == key:
                             opp_board = n.send(f"guess {key} {player}")
         if player == "1":
+            
             #print("hellooofjdiryuhrzksbtgrkhybsxzlbh")     
             for key, value in opp_board.board_2.items():
                 if value[2] == "Hit":
+                    self.num_of_replays += 1
                     topleft = value[0].topleft
                     bottomright = value[0].bottomright
                     topright = value[0].topright
                     bottomleft = value[0].bottomleft
                     pygame.draw.line(self.win, WHITE, (topleft),(bottomright))
                     pygame.draw.line(self.win, WHITE, (topright),(bottomleft))
+                    print(self.num_of_replays)
+                    if self.num_of_replays == 1:
+                        if not self.mute_music:
+                            self.hit_sound.play()
+                            print("sound232")
                 if value[2] == "Miss":
+                    self.num_of_replays += 1
                     top = value[0].top
                     bottom = value[0].bottom
                     right = value[0].right
                     left = value[0].left
                     pygame.draw.circle(self.win, WHITE, ((right+left)/2, (top+bottom)/2), 10)
+                    print(self.num_of_replays)
+                    if self.num_of_replays == 1:
+                        if not self.mute_music:
+                            self.miss_sound.play()
+                            print("sound!!!!!")
                 run = False
         else:
+            
             for key, value in opp_board.board.items():
                 if value[2] == "Hit":
+                    self.num_of_replays += 1
                     topleft = value[0].topleft
                     bottomright = value[0].bottomright
                     topright = value[0].topright
                     bottomleft = value[0].bottomleft
                     pygame.draw.line(self.win, WHITE, (topleft),(bottomright))
                     pygame.draw.line(self.win, WHITE, (topright),(bottomleft))
+                    print(self.num_of_replays)
+                    if self.num_of_replays == 1:
+                        if not self.mute_music:
+                            self.hit_sound.play()
+                            print("sound player 2 screen hit")
                 if value[2] == "Miss":
+                    self.num_of_replays += 1
                     top = value[0].top
                     bottom = value[0].bottom
                     right = value[0].right
                     left = value[0].left
                     pygame.draw.circle(self.win, WHITE, ((right+left)/2, (top+bottom)/2), 10)
+                    print(self.num_of_replays)
+                    if self.num_of_replays == 1:
+                        if not self.mute_music:
+                            self.miss_sound.play()
+                            print("sound player 2 screen hit")
+        
                 run = False
 
                             #else:
@@ -788,24 +848,50 @@ class Game():
                                 #root.overrideredirect(1)
                                 #root.withdraw()
                                 #tk.showerror("Select different box", "You can't choose a box you have already chosen!")
-            #pygame.display.flip()
+            pygame.display.flip()
 
-    def ending_screen(self, winner, player):
+    def ending_screen(self,player):
         while True:
-            self.win.fill(BLACK)
+            gdata = n.send("get")
+            self.win.fill(WHITE)
+
+            
+            quit_button = pygame.Rect(400,400,50,50)
+            quit_button_img = pygame.image.load('imgs/quit.png')
+            self.win.blit(pygame.transform.scale(quit_button_img,(50,50)), (400,400))
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     n.disconnect()
                     pygame.quit()
-
-            if player == winner:   
-                player_guessing = self.big_font.render("You won!", 1, (0,255,0))
-                self.win.blit( player_guessing, (170, 50))
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if quit_button.collidepoint(event.pos):
+                        pygame.quit()
+                        break
+                    
+            
+            if player == gdata.winner:
+                if player == "1":   
+                    player_guessing = self.big_font.render(f"{gdata.p1Name} You won!", 1, (0,255,0))
+                    self.win.blit( player_guessing, (300, 50))
+                else:
+                    player_guessing = self.big_font.render(f"{gdata.p2Name} You won!", 1, (0,255,0))
+                    self.win.blit( player_guessing, (300, 50))
             else:
-                player_guessing = self.big_font.render("You lost!", 1, (0,255,0))
-                self.win.blit( player_guessing, (170, 50))
-            restart_button = pygame.Rect(425,400,50,50)
-            quit_button = pygame.Rect(500,500,50,50)
+                if player == "1":   
+                    player_guessing = self.big_font.render(f"{gdata.p1Name} You lost!", 1, (0,255,0))
+                    self.win.blit( player_guessing, (300, 50))
+                else:
+                    player_guessing = self.big_font.render(f"{gdata.p2Name} You lost!", 1, (0,255,0))
+                    self.win.blit( player_guessing, (300, 50))
+            """
+            if player == "1":   
+                player_guessing = self.big_font.render(f"{gdata.p1Name}You won!", 1, (0,255,0))
+                self.win.blit( player_guessing, (300, 50))
+            else:
+                player_guessing = self.big_font.render(f"{gdata.p2Name}You won!", 1, (0,255,0))
+                self.win.blit( player_guessing, (300, 50))
+            """
+            pygame.display.flip()
 
     def connect(self):
         """
@@ -835,9 +921,9 @@ class Game():
         #self.DrawGrid()
         
         self.DisplayBoardWindow(player)
-        
+        turn_before = player 
         while run:
-            
+            #print("hello")
             gdata = n.send("get")
             
             
@@ -847,18 +933,56 @@ class Game():
                 
             if gdata.winner == "1":
                 print(f"Player {gdata.p1Name} won")
-            if gdata.winner == "2":
-                print(f"Player {gdata.p2Name} won")
+            
+            if gdata.winner != None:
+                if player == "1":
+                    self.ending_screen("1")
+                else:
+                    self.ending_screen("2")
             
             if player == gdata.turn:
+                
+                if player=="1":
+                    if gdata.reset1:
+                        self.num_of_replays = 0
+                        board = n.send("reset1")
+                else:
+                    if gdata.reset2:
+                        self.num_of_replays = 0
+                        board = n.send("reset2")
                 self.DisplayGuessesWindow(player)
+                turn_before = player
             else:
+                
+                if player=="1":
+                    if gdata.reset1:
+                        self.num_of_replays = 0
+                        board = n.send("reset1")
+                else:
+                    if gdata.reset2:
+                        self.num_of_replays = 0
+                        board = n.send("reset2")
                 self.DisplayOpponentsGuesses()
-            
-            
+                turn_before = player 
+            pygame.display.flip()
 
             
-            pygame.display.flip()
+            
+            
+            
+            """   
+            if gdata.winner == "2":
+                print(f"Player {gdata.p2Name} won")
+                self.ending_screen(gdata.p2Name)
+            
+            if gdata.winner != None:
+                if player == "1":
+                    self.ending_screen("1")
+                else:
+                    self.ending_screen("2")
+            """
+            
+            
             
             
         print("Hello")

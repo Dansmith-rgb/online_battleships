@@ -107,11 +107,11 @@ def threaded_client(conn, game, spec=False):
                         if player == "1":
                             print("Player 1")
                             gd.board[sqaure_number][1] = name
-                            #print(gd.board)
+                            print(f"board 1: {gd.board}")
                         else:
                             print("PLayer 2")
                             gd.board_2[sqaure_number][1] = name
-                            print(gd.board_2)
+                            print(f"board 2: {gd.board_2}")
                         #square_info = all[1]
                     # If the data has select and space and all the
                     # other variables then it will go inside the if statement
@@ -128,9 +128,18 @@ def threaded_client(conn, game, spec=False):
                         # It then changes who's turn it is
                         if gd.turn == "1":
                             gd.turn = "2"
+                            gd.reset1 = True
+                            gd.reset2 = True
                         else:
                             gd.turn = "1"
+                            gd.reset1 = True
+                            gd.reset2 = True
 
+                    if data == "reset1":
+                        gd.reset1 = False
+                    
+                    if data =="reset2":
+                        gd.reset2 = False
 
                     if data == "player 1 ready":
                         gd.p1_ready = True

@@ -33,6 +33,8 @@ class Game_data:
         self.startTime = time.time()
         self.p1_ready = False
         self.p2_ready = False
+        self.reset1 = False
+        self.reset2 = False
 
     def check_for_win(self, player):
         pass
